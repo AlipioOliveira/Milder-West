@@ -19,7 +19,8 @@ public class RevolverInput : MonoBehaviour
 
     public int magazineSize = 6;
     private int bulletsIn;
-    private bool isReloading = false;
+    private bool isReloading = false;   
+
     void Start () 
 	{
         bulletsIn = magazineSize;
@@ -31,10 +32,9 @@ public class RevolverInput : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)
         {
-            anim.SetTrigger("Shot1");
-            bulletsIn--;
+            anim.SetTrigger("Shot1");            
         }
-        else if (bulletsIn <= 0 && isReloading == false && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))
+        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))
         {                              
             anim.SetTrigger("Reload");
         }
@@ -52,8 +52,8 @@ public class RevolverInput : MonoBehaviour
 
     public void Shoot()
     {
-        
-        muzzle.Play();
+        bulletsIn--;
+        muzzle.Play();        
         //RaycastHit hit;
 
         //if (Physics.Raycast(transform.position, transform.position - transform.parent.position , out hit, 100f))
