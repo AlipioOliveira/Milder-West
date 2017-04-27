@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +27,13 @@ public class PlayerControlls : MonoBehaviour {
     private bool hasWeapon = false;
     private bool interacting = false;
 
-    private Transform target;   
+    private Transform target;
+
+    public GameObject deadPrefab; //TEM DE TER AS MESMAS CHILDREN
+
+    private bool isDead = false;
+
+    public GameObject[] Children { get; private set; }
 
     void Start ()
     {
@@ -110,13 +117,23 @@ public class PlayerControlls : MonoBehaviour {
             //        weapon = Instantiate(prefab, hand.transform, false);
             //    else Destroy(weapon);
             //}
-            if (hasWeapon && Input.GetKeyDown(KeyCode.Mouse0))
+            //if (hasWeapon && Input.GetKeyDown(KeyCode.Mouse0))
+            //{
+            //    Debug.Log("FIRE!!");
+            //    animator.SetTrigger("Shoot");
+            //    weapon.GetComponent<RevolverInput>().Shoot();
+            //}
+            if (Input.GetKeyDown(KeyCode.Alpha1) && !isDead)
             {
-                Debug.Log("FIRE!!");
-                animator.SetTrigger("Shoot");
-                weapon.GetComponent<RevolverInput>().Shoot();
-            }
+                isDead = true;
+                spawnDeadPrefab(transform, deadPrefab.transform);
 
+                Destroy(gameObject);
+
+                GameObject inst = Instantiate(deadPrefab);
+                ThirdPersonCamera.instacia.playerDead = true;
+                               
+            }
             if (Input.GetButtonDown("Jump") && !isJumping && translation >= 0)
             {
                 //Debug.Log("Jump");
@@ -132,6 +149,17 @@ public class PlayerControlls : MonoBehaviour {
             transform.rotation = Quaternion.LookRotation(newDirection);
         }      
 	}
+
+    private void spawnDeadPrefab(Transform player, Transform dead)
+    {       
+        for (int i = 0; i < player.childCount; i++)
+        {                        
+            dead.transform.GetChild(i).gameObject.transform.position = player.GetChild(i).gameObject.transform.position;
+            dead.transform.GetChild(i).gameObject.transform.rotation = player.GetChild(i).gameObject.transform.rotation;
+            if (player.GetChild(i).childCount > 0)            
+                spawnDeadPrefab(player.GetChild(i), dead.GetChild(i));            
+        }            
+    }
 
     public void startInteraction(Transform _target, bool locked)
     {

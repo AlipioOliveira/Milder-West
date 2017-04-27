@@ -26,9 +26,14 @@ public class ThirdPersonCamera : MonoBehaviour
     [Range(0.1f,5f)]
     public float transitionSpeed = 0.3f;
     private float camY = 2f;
+    public bool playerDead = false;
+
+    public GameObject canvasToFade;
+    private Animator canvasAnimator;
 
     void Start ()
     {
+        canvasAnimator = canvasToFade.GetComponent<Animator>();
         Cursor.visible = custorVisivle;
         myTransform = transform;        
         cam = Camera.main;
@@ -45,22 +50,30 @@ public class ThirdPersonCamera : MonoBehaviour
 
     void LateUpdate ()
     {
-        if (!interacting)
+        if (!playerDead)
         {
-            Vector3 direction = new Vector3(0, height, -distance);
-            Quaternion rotation = Quaternion.Euler(currY, currX, 0);
+            if (!interacting)
+            {
+                Vector3 direction = new Vector3(0, height, -distance);
+                Quaternion rotation = Quaternion.Euler(currY, currX, 0);
 
-            myTransform.position = targetTransform.position + rotation * direction;
-            myTransform.LookAt(targetTransform.position);
+                myTransform.position = targetTransform.position + rotation * direction;
+                myTransform.LookAt(targetTransform.position);
+            }
+            else
+            {
+                if (transitionTime > 0)
+                    transitionTime -= (1f / transitionSpeed) * Time.deltaTime;
+
+                Vector3 newLookPos = npc.transform.position - (npc.transform.position - targetTransform.position) * transitionTime;
+                myTransform.LookAt(newLookPos);
+            }
         }
         else
         {
-            if (transitionTime > 0 )
-                transitionTime -= (1f / transitionSpeed) * Time.deltaTime;
-
-            Vector3 newLookPos = npc.transform.position - (npc.transform.position - targetTransform.position) * transitionTime;
-            myTransform.LookAt(newLookPos);
-        }      
+            canvasToFade.SetActive(true);
+            canvasAnimator.speed = -1f;            
+        }        
 	}
 
     public void StartInteraction(Transform target)
