@@ -28,12 +28,8 @@ public class ThirdPersonCamera : MonoBehaviour
     private float camY = 2f;
     public bool playerDead = false;
 
-    public GameObject canvasToFade;
-    private Animator canvasAnimator;
-
     void Start ()
     {
-        canvasAnimator = canvasToFade.GetComponent<Animator>();
         Cursor.visible = custorVisivle;
         myTransform = transform;        
         cam = Camera.main;
@@ -68,12 +64,7 @@ public class ThirdPersonCamera : MonoBehaviour
                 Vector3 newLookPos = npc.transform.position - (npc.transform.position - targetTransform.position) * transitionTime;
                 myTransform.LookAt(newLookPos);
             }
-        }
-        else
-        {
-            canvasToFade.SetActive(true);
-            canvasAnimator.speed = -1f;            
-        }        
+        }      
 	}
 
     public void StartInteraction(Transform target)

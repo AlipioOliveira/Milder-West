@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,25 +18,25 @@ public class RevolverInput : MonoBehaviour
 
     public int magazineSize = 6;
     private int bulletsIn;
-    private bool isReloading = false;   
+    private bool isReloading = false;
 
-    void Start () 
-	{
+    private Vector3 inacuracy;
+
+    public Rigidbody PlayerRb;
+
+    void Start()
+    {
         bulletsIn = magazineSize;
         anim = GetComponent<Animator>();
-	}
-	
-	void Update () 
-	{
+    }
 
-        if (Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)
-        {
-            anim.SetTrigger("Shot1");            
-        }
-        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))
-        {                              
-            anim.SetTrigger("Reload");
-        }
+    void Update()
+    {
+
+        if (Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)                  
+            anim.SetTrigger("Shot1");        
+        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))        
+            anim.SetTrigger("Reload");        
     }
 
     public void StartReload()
@@ -52,18 +51,19 @@ public class RevolverInput : MonoBehaviour
 
     public void Shoot()
     {
+        inacuracy = new Vector3(Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.x, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.y, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.z);
         bulletsIn--;
-        muzzle.Play();        
+        muzzle.Play();
         //RaycastHit hit;
 
         //if (Physics.Raycast(transform.position, transform.position - transform.parent.position , out hit, 100f))
         //    print("Found an object - name: " + hit.transform.name);
 
         RaycastHit hit;
-        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, range))
+        if (Physics.Raycast(camera.transform.position, camera.transform.forward + inacuracy, out hit, range))
         {
             Debug.Log("HIT : " + hit.transform.name);
-        }        
+        }
 
         GameObject impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
         Destroy(impact, 0.3f);
