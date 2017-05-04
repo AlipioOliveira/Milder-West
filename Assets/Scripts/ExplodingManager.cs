@@ -15,10 +15,12 @@ public class ExplodingManager : MonoBehaviour
     private int Winner = 0;
 
     public GameObject ExplosionPrefab;
-
-	void Start () 
+    public float slowness = 10f;
+    public float slowDownTime = 3f;
+    void Start () 
 	{
-        Explosive = objects[Random.Range(0, objects.Count)];                
+        Explosive = objects[Random.Range(0, objects.Count)];
+        Debug.Log(objects.IndexOf(Explosive));          
         instancia = this;        
         NextRound();
 	}
@@ -56,16 +58,34 @@ public class ExplodingManager : MonoBehaviour
         {
             Debug.Log("PlayerWon!!");
             Winner = 2;
+            ExplodingManager.instancia.SlowTime();
         }
         if (roud % 2 == 1) //odd
         {
             Debug.Log("NPCWon!!");
             Winner = 1;
+            ExplodingManager.instancia.SlowTime();
         }
     }
 
     public GameObject getExplosive()
     {
         return Explosive;
+    }
+
+    public void SlowTime()
+    {
+        StartCoroutine(SlowDown());
+    }
+
+    IEnumerator SlowDown()
+    {
+        Time.timeScale = 1f / slowness;
+        Time.fixedDeltaTime = Time.fixedDeltaTime / slowness;
+
+        yield return new WaitForSeconds(slowDownTime * Time.timeScale);
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = Time.fixedDeltaTime * slowness;       
     }
 }

@@ -18,6 +18,8 @@ public class ExplodingNpc : MonoBehaviour
     private Animator anim;
     private float rotateSpeed = 3f;
 
+    public GameObject deadPrefab;
+
     void Start () 
 	{
         originalPos = transform.position;
@@ -86,13 +88,27 @@ public class ExplodingNpc : MonoBehaviour
         ExplodingManager.instancia.NextRound();
     }
 
+    private void spawnDeadPrefab(Transform player, Transform dead)
+    {
+        for (int i = 0; i < player.childCount; i++)
+        {
+            dead.transform.GetChild(i).gameObject.transform.position = player.GetChild(i).gameObject.transform.position;
+            dead.transform.GetChild(i).gameObject.transform.rotation = player.GetChild(i).gameObject.transform.rotation;
+            if (player.GetChild(i).childCount > 0)
+                spawnDeadPrefab(player.GetChild(i), dead.GetChild(i));
+        }
+    }
+
     private void Shoot()
     {
         anim.SetTrigger("Shoot");        
         if (isDead)
         {          
             Instantiate(ExplodingManager.instancia.ExplosionPrefab, target.transform.position, target.transform.rotation);
-            ExplodingManager.instancia.HasWinner();
+            spawnDeadPrefab(transform, deadPrefab.transform);            
+            GameObject inst = Instantiate(deadPrefab);
+            ExplodingManager.instancia.HasWinner();           
+            Destroy(gameObject);
         }
         target.GetComponent<BreakOnColision>().Break();
         ExplodingManager.instancia.objects.Remove(target);                
