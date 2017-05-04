@@ -30,7 +30,7 @@ public class fpsController : MonoBehaviour
             if (grounded)
             {
                 // Calculate how fast we should be moving
-                Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                Vector3 targetVelocity = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
                 targetVelocity = transform.TransformDirection(targetVelocity);
                 targetVelocity *= speed;
 

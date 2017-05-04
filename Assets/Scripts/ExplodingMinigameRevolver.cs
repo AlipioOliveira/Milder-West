@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RevolverInput : MonoBehaviour
+public class ExplodingMinigameRevolver : MonoBehaviour 
 {
+
     //public Camera cam;
     private Animator anim;
 
@@ -36,11 +37,11 @@ public class RevolverInput : MonoBehaviour
 
     void Update()
     {
-        
-        if (canFire() && Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)                  
-            anim.SetTrigger("Shot1");        
-        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))        
-            anim.SetTrigger("Reload");        
+
+        if (canFire() && Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)
+            anim.SetTrigger("Shot1");
+        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))
+            anim.SetTrigger("Reload");
     }
 
     public void StartReload()
@@ -67,7 +68,12 @@ public class RevolverInput : MonoBehaviour
             {
                 crosshair.color = Color.green;
                 return true;
-            }            
+            }
+        }
+        else
+        {
+            crosshair.color = Color.green;
+            return true;
         }
         return true;
     }
@@ -84,21 +90,26 @@ public class RevolverInput : MonoBehaviour
 
         RaycastHit hit;
         if (Physics.Raycast(camera.transform.position, camera.transform.forward + inacuracy, out hit, range))
-        {           
+        {
             crosshair.color = Color.red;
-
-            GameObject impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impact, 0.3f);
-
             if (hit.rigidbody != null)
             {
                 hit.rigidbody.AddForceAtPosition((hit.point - camera.transform.position).normalized * force, hit.point);
-                hit.transform.parent = null;
             }
-            if (breakObjectOnCollision && hit.transform.tag == "Breakable")
+            if (breakObjectOnCollision && ExplodingManager.instancia.objects.Contains(hit.transform.gameObject) && hit.transform.tag == "Breakable")
             {
+                if (hit.transform.gameObject == ExplodingManager.instancia.getExplosive())
+                {
+                    Debug.Log("EXPLODE");
+                    ExplodingManager.instancia.HasWinner();
+                    Instantiate(ExplodingManager.instancia.ExplosionPrefab, hit.transform.position, hit.transform.rotation);
+                }
+                ExplodingManager.instancia.objects.Remove(hit.transform.gameObject);
                 hit.transform.GetComponent<BreakOnColision>().Break();
+                ExplodingManager.instancia.NextRound();
             }
-        }        
+            GameObject impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(impact, 0.3f);
+        }                
     }
 }

@@ -12,12 +12,14 @@ public class BreakOnColision : MonoBehaviour {
     private bool isBroken = false;
     void OnCollisionEnter(Collision collision)
     {
-        if ((collision.relativeVelocity.magnitude > 6f * strength) && !isBroken)
-        {
-            isBroken = true;
-            Instantiate(prefab, transform.position, transform.rotation);
-            Destroy(gameObject);
-        }
-                
+        if ((collision.relativeVelocity.magnitude > 6f * strength) && !isBroken) 
+            Break();                        
+    }
+
+    public void Break()
+    {
+        isBroken = true;
+        Instantiate(prefab, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 }

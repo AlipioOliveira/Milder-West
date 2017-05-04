@@ -23,11 +23,7 @@ public class ExplodingPlayer : MonoBehaviour
 	{
         if (isTurn)
         {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                ExplodingManager.instancia.NextRound();
-                isTurn = false;
-            }
+            
         }
         else
         {

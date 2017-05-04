@@ -6,20 +6,19 @@ public class ExplodingManager : MonoBehaviour
 {
     public static ExplodingManager instancia;
 
-    public List<GameObject> objects;
-    private List<int> NpcIndexes;
+    public List<GameObject> objects;       
     public GameObject npc;
     public GameObject player;
-    private int ExplosiveIndex;
+    private GameObject Explosive;
 
     private int roud = 0;
+    private int Winner = 0;
+
+    public GameObject ExplosionPrefab;
 
 	void Start () 
 	{
-        ExplosiveIndex = Random.Range(0, objects.Count);
-        NpcIndexes = new List<int>();
-        for (int i = 0; i < objects.Count; i++)
-            NpcIndexes.Add(i);              
+        Explosive = objects[Random.Range(0, objects.Count)];                
         instancia = this;        
         NextRound();
 	}
@@ -30,31 +29,43 @@ public class ExplodingManager : MonoBehaviour
     }
 
     public void NextRound()
-    {
-        roud++;
-        if (roud % 2 == 0) //even
+    {       
+        if (Winner == 0)
         {
-            int index = Random.Range(0, NpcIndexes.Count);            
-            if (NpcIndexes[index] == ExplosiveIndex)            
-                npc.GetComponent<ExplodingNpc>().isTurn(true, objects[NpcIndexes[index]]);            
-            else            
-                npc.GetComponent<ExplodingNpc>().isTurn(false, objects[index]);
-            NpcIndexes.Remove(index);
-        }            
-        if (roud % 2 == 1) //odd
-            player.GetComponent<ExplodingPlayer>().IsTurn();
+            roud++;
+            if (roud % 2 == 0) //even
+            {
+                player.GetComponent<fpsController>().FreezePlayer(true);
+                int index = Random.Range(0, objects.Count);
+                if (objects[index] == Explosive)                
+                    npc.GetComponent<ExplodingNpc>().isTurn(true, objects[index]);                
+                else                
+                    npc.GetComponent<ExplodingNpc>().isTurn(false, objects[index]);               
+            }
+            if (roud % 2 == 1) //odd
+            {
+                player.GetComponent<ExplodingPlayer>().IsTurn();
+                player.GetComponent<fpsController>().FreezePlayer(false);
+            }
+        }        
     }
 
-    private void giveTarguetToNpc()
-    {
-        
-    }
-
-    public void Winner()
+    public void HasWinner()
     {
         if (roud % 2 == 0) //even        
-            Debug.Log("PlayerWon!!");        
+        {
+            Debug.Log("PlayerWon!!");
+            Winner = 2;
+        }
         if (roud % 2 == 1) //odd
+        {
             Debug.Log("NPCWon!!");
+            Winner = 1;
+        }
+    }
+
+    public GameObject getExplosive()
+    {
+        return Explosive;
     }
 }
