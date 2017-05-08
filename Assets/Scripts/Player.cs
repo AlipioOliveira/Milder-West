@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     private PlayerControlls playerControlls;
     private NPCManager npcManager;
 
+    private bool alive = true;
+
     void Start () 
 	{
         npcManager = GetComponent<NPCManager>();
@@ -24,5 +26,10 @@ public class Player : MonoBehaviour
     {
         Debug.Log("add - " + obj.tag);
         npcManager.addNewNPC(obj);
+    }
+
+    public bool isAlive()
+    {
+        return alive;
     }
 }

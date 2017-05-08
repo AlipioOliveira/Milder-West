@@ -46,7 +46,7 @@ public class ThirdPersonCamera : MonoBehaviour
 
     void LateUpdate ()
     {
-        if (!playerDead)
+        if (targetTransform != null)
         {
             if (!interacting)
             {

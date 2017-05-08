@@ -10,17 +10,29 @@ public class ExplodingManager : MonoBehaviour
     public GameObject npc;
     public GameObject player;
     private GameObject Explosive;
-
+    
     private int roud = 0;
     private int Winner = 0;
 
     public GameObject ExplosionPrefab;
     public float slowness = 10f;
     public float slowDownTime = 3f;
+
+    public Camera endCamera;
+
+    private bool playerHasShot = false;
+
+    public Object EndPlayer;
+
+    public PlayerTrigger EndTrigger;
+    public PlayerTrigger WeaponTrigger; 
+
     void Start () 
 	{
+        changeTimeBakcToNormal();
         Explosive = objects[Random.Range(0, objects.Count)];
-        Debug.Log(objects.IndexOf(Explosive));          
+        Debug.Log(objects.IndexOf(Explosive));
+        endCamera.gameObject.SetActive(false);
         instancia = this;        
         NextRound();
 	}
@@ -37,6 +49,8 @@ public class ExplodingManager : MonoBehaviour
             roud++;
             if (roud % 2 == 0) //even
             {
+                CanvasManager.instancia.setTunrNameText("Its BOT turn to Play.");
+                CanvasManager.instancia.setTunrCheckpointText("");                
                 player.GetComponent<fpsController>().FreezePlayer(true);
                 int index = Random.Range(0, objects.Count);
                 if (objects[index] == Explosive)                
@@ -46,9 +60,13 @@ public class ExplodingManager : MonoBehaviour
             }
             if (roud % 2 == 1) //odd
             {
+                CanvasManager.instancia.setTunrNameText("Its PLAYER turn to Play.");
+                CanvasManager.instancia.setTunrCheckpointText("Its Player's time to shoot.");
                 player.GetComponent<ExplodingPlayer>().IsTurn();
                 player.GetComponent<fpsController>().FreezePlayer(false);
+                CanvasManager.instancia.setTunrNumberText("Tunr : " + roud);
             }
+            CanvasManager.instancia.setTunrNumberText("Tunr : " + roud);
         }        
     }
 
@@ -58,14 +76,29 @@ public class ExplodingManager : MonoBehaviour
         {
             Debug.Log("PlayerWon!!");
             Winner = 2;
-            ExplodingManager.instancia.SlowTime();
+            player.GetComponent<ExplodingPlayer>().playerCamera.enabled = false;
+            Destroy(player.gameObject);
+            Instantiate(EndPlayer, player.transform.position - new Vector3(0,0.9f,0), player.transform.rotation);
+            endCamera.gameObject.SetActive(true);
+            SlowTime();
+            setEndCanvas("Congratulations you won!!!");
         }
         if (roud % 2 == 1) //odd
-        {
+        {            
             Debug.Log("NPCWon!!");
             Winner = 1;
-            ExplodingManager.instancia.SlowTime();
+            player.GetComponent<ExplodingPlayer>().playerCamera.enabled = false;
+            Destroy(player.gameObject);            
+            endCamera.gameObject.SetActive(true);
+            SlowTime();
+            setEndCanvas("Better luck next time");
         }
+    }
+
+    private void setEndCanvas(string winner)
+    {
+        CanvasManager.instancia.ActivateEndCanvas();
+        CanvasManager.instancia.setEndTextText(winner);
     }
 
     public GameObject getExplosive()
@@ -75,7 +108,30 @@ public class ExplodingManager : MonoBehaviour
 
     public void SlowTime()
     {
-        StartCoroutine(SlowDown());
+        StartCoroutine(SlowDown());        
+    }
+
+    internal void UpdateTrigger()
+    {
+        if(playerHasShot && EndTrigger.getIsPlayerInside())
+        {
+            NextRound();
+            playerHasShot = false;
+            player.GetComponent<fpsController>().FreezePlayer(true);
+        }
+        else if(WeaponTrigger.getIsPlayerInside() && !playerHasShot)
+        {
+            ExplodingMinigameRevolver.instacia.setWeaponStatus(true);
+        }
+        else if (!WeaponTrigger.getIsPlayerInside())
+        {
+            ExplodingMinigameRevolver.instacia.setWeaponStatus(false);
+        }
+    }
+
+    public void PlayerShoot()
+    {
+        playerHasShot = true;
     }
 
     IEnumerator SlowDown()
@@ -87,5 +143,11 @@ public class ExplodingManager : MonoBehaviour
 
         Time.timeScale = 1f;
         Time.fixedDeltaTime = Time.fixedDeltaTime * slowness;       
+    }
+
+    public void changeTimeBakcToNormal()
+    {        
+        //Time.timeScale = 1f;
+        //Time.fixedDeltaTime = Time.fixedDeltaTime * slowness;
     }
 }

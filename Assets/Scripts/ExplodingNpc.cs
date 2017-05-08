@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,10 +37,7 @@ public class ExplodingNpc : MonoBehaviour
                 Vector3 direction = target.transform.position - transform.position;
                 if (direction.magnitude > 2f)
                 {
-                    direction.y = 0;
-                    direction.Normalize();
-                    transform.position += direction * speed * Time.deltaTime;
-                    anim.SetBool("isWalking", true);
+                    Walk(direction);
                 }
                 else Shoot();
                 rotateTwords(target.transform);
@@ -49,10 +47,7 @@ public class ExplodingNpc : MonoBehaviour
                 Vector3 direction = originalPos - transform.position;
                 if (direction.magnitude > 0.5f)
                 {
-                    direction.y = 0;
-                    direction.Normalize();
-                    transform.position += direction * speed * Time.deltaTime;
-                    anim.SetBool("isWalking", true);
+                    Walk(direction);
                 }
                 else Stop();
                 rotateTwords(originalPos);
@@ -71,6 +66,14 @@ public class ExplodingNpc : MonoBehaviour
                 return;
             }
         }     
+    }
+
+    private void Walk(Vector3 direction)
+    {
+        direction.y = 0;
+        direction.Normalize();
+        transform.position += direction * speed * Time.deltaTime;
+        anim.SetBool("isWalking", true);
     }
 
     public void isTurn(bool isGonnaDie, GameObject t)

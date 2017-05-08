@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ExplodingMinigameRevolver : MonoBehaviour 
 {
+    public static ExplodingMinigameRevolver instacia;
 
-    //public Camera cam;
     private Animator anim;
 
     public float range = 100f;
@@ -21,6 +21,7 @@ public class ExplodingMinigameRevolver : MonoBehaviour
     public int magazineSize = 6;
     private int bulletsIn;
     private bool isReloading = false;
+    private bool canUseWeapon = false;
 
     private Vector3 inacuracy;
 
@@ -29,19 +30,22 @@ public class ExplodingMinigameRevolver : MonoBehaviour
     public Image crosshair;
     public bool breakObjectOnCollision = false;
 
+    public GameObject deadPrefab;
+
     void Start()
     {
         bulletsIn = magazineSize;
         anim = GetComponent<Animator>();
+        instacia = this;
     }
 
     void Update()
     {
 
-        if (canFire() && Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)
-            anim.SetTrigger("Shot1");
-        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))
-            anim.SetTrigger("Reload");
+            if (canFire() && canUseWeapon && Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)
+                anim.SetTrigger("Shot1");
+            else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))
+                anim.SetTrigger("Reload");      
     }
 
     public void StartReload()
@@ -52,6 +56,12 @@ public class ExplodingMinigameRevolver : MonoBehaviour
     {
         isReloading = false;
         bulletsIn = magazineSize;
+    }
+
+    public void setWeaponStatus(bool state)
+    {
+        canUseWeapon = state;
+        anim.SetBool("Down", !state);
     }
 
     private bool canFire()
@@ -74,8 +84,7 @@ public class ExplodingMinigameRevolver : MonoBehaviour
         {
             crosshair.color = Color.green;
             return true;
-        }
-        return true;
+        }        
     }
 
     public void Shoot()
@@ -91,22 +100,25 @@ public class ExplodingMinigameRevolver : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(camera.transform.position, camera.transform.forward + inacuracy, out hit, range))
         {
-            crosshair.color = Color.red;
             if (hit.rigidbody != null)
             {
                 hit.rigidbody.AddForceAtPosition((hit.point - camera.transform.position).normalized * force, hit.point);
             }
             if (breakObjectOnCollision && ExplodingManager.instancia.objects.Contains(hit.transform.gameObject) && hit.transform.tag == "Breakable")
-            {
+            {                               
+                setWeaponStatus(false);
+                ExplodingManager.instancia.objects.Remove(hit.transform.gameObject);
+                ExplodingManager.instancia.PlayerShoot();
+                hit.transform.GetComponent<BreakOnColision>().Break();
                 if (hit.transform.gameObject == ExplodingManager.instancia.getExplosive())
                 {
                     Debug.Log("EXPLODE");
-                    ExplodingManager.instancia.HasWinner();
+                    Instantiate(deadPrefab, ExplodingManager.instancia.player.transform.position, ExplodingManager.instancia.player.transform.rotation);
                     Instantiate(ExplodingManager.instancia.ExplosionPrefab, hit.transform.position, hit.transform.rotation);
+                    ExplodingManager.instancia.HasWinner();
                 }
-                ExplodingManager.instancia.objects.Remove(hit.transform.gameObject);
-                hit.transform.GetComponent<BreakOnColision>().Break();
-                ExplodingManager.instancia.NextRound();
+                CanvasManager.instancia.setTunrCheckpointText("Go back to your spot.");      
+                          
             }
             GameObject impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impact, 0.3f);

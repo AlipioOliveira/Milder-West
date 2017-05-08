@@ -127,12 +127,9 @@ public class PlayerControlls : MonoBehaviour {
             {
                 isDead = true;
                 spawnDeadPrefab(transform, deadPrefab.transform);
-
-                Destroy(gameObject);
-
-                GameObject inst = Instantiate(deadPrefab);
-                ThirdPersonCamera.instacia.playerDead = true;
-                               
+                Instantiate(deadPrefab);
+                //ThirdPersonCamera.instacia.playerDead = true;
+                Destroy(gameObject);                                               
             }
             if (Input.GetButtonDown("Jump") && !isJumping && translation >= 0)
             {

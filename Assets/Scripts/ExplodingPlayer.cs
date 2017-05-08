@@ -8,9 +8,11 @@ public class ExplodingPlayer : MonoBehaviour
 
     private fpsController controller;
 
-    private bool isTurn = false;
+    private bool isTurn = false;    
 
     private Vector3 originalPos;
+
+    public Camera playerCamera;
 
 	void Start () 
 	{
