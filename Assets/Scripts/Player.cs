@@ -22,12 +22,6 @@ public class Player : MonoBehaviour
         
 	}  
 
-    public void addToList(GameObject obj)
-    {
-        Debug.Log("add - " + obj.tag);
-        npcManager.addNewNPC(obj);
-    }
-
     public bool isAlive()
     {
         return alive;

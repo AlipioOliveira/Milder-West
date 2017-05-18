@@ -1,0 +1,27 @@
+{
+  "FristName": [ "Joe", "Lang", "Tom", "Eli", "Tony"],
+  "LastName": [ "Doyle", "Thompson", "Langley", "Corleone", "Lake" ],
+  "Dialogue": 
+	[ 
+		{
+			"id": 0,
+			"minigameId" : 0,
+			"DialogueText" : ["1 - HEY WASUP", "HOW YOU DOING!!", "ITS WORKING BOYS!!"]	
+		},
+		{
+			 "id": 1,
+			 "minigameId": 1,
+			 "DialogueText": [ "2 - BLAH BLAG BLAH", "IM NOT HERE", "NO??" ]
+		},
+		{
+			"id": 2,
+			"minigameId": 2,
+			"DialogueText": [ "3 - Im Here", "Just kidding", "blah blah blah" ]
+		},
+		{
+			"id": 3,
+			"minigameId" : 3,
+			"DialogueText" : ["4 - Can I walk?", "YES I CAN !!!!!!"]
+		}
+	]
+}

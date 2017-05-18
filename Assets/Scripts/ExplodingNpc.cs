@@ -107,9 +107,9 @@ public class ExplodingNpc : MonoBehaviour
         anim.SetTrigger("Shoot");        
         if (isDead)
         {          
-            Instantiate(ExplodingManager.instancia.ExplosionPrefab, target.transform.position, target.transform.rotation);
-            spawnDeadPrefab(transform, deadPrefab.transform);            
-            GameObject inst = Instantiate(deadPrefab);
+            Instantiate(ExplodingManager.instancia.ExplosionPrefab, target.transform.position, target.transform.rotation);                   
+            GameObject dead = Instantiate(deadPrefab);
+            spawnDeadPrefab(transform, dead.transform);
             ExplodingManager.instancia.HasWinner();           
             Destroy(gameObject);
         }

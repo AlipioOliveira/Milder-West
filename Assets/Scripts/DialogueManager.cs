@@ -61,29 +61,30 @@ public class DialogueManager : MonoBehaviour
         switchLine = 1f;
         dialogueString = new List<string>();
         foreach (var item in lines)
-        {            
-            if (checkLineLength && item.Length >= maxLetters)
-            {
-                string[] line;
-                line = item.Split(' ');
-                string l1 = "", l2 = "";
-                for (int i = 0; i < line.Length; i++)
-                {
-                    if (i < line.Length / 2)
-                    {
-                        l1 += line[i];
-                        l1 += " ";
-                    }
-                    else
-                    {
-                        l2 += line[i];
-                        l2 += " ";
-                    }
-                }
-                dialogueString.Add(l1);
-                dialogueString.Add(l2);
-            }
-            else dialogueString.Add(item);                                    
+        {
+            //if (checkLineLength && item.Length >= maxLetters)
+            //{
+            //    string[] line;
+            //    line = item.Split(' ');
+            //    string l1 = "", l2 = "";
+            //    for (int i = 0; i < line.Length; i++)
+            //    {
+            //        if (i < line.Length / 2)
+            //        {
+            //            l1 += line[i];
+            //            l1 += " ";
+            //        }
+            //        else
+            //        {
+            //            l2 += line[i];
+            //            l2 += " ";
+            //        }
+            //    }
+            //    dialogueString.Add(l1);
+            //    dialogueString.Add(l2);
+            //}
+            //else 
+            dialogueString.Add(item);                                    
         }
         npcName = name;
         interacingWith = interactor;

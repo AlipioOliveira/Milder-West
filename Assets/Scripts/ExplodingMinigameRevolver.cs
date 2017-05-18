@@ -112,7 +112,7 @@ public class ExplodingMinigameRevolver : MonoBehaviour
                 hit.transform.GetComponent<BreakOnColision>().Break();
                 if (hit.transform.gameObject == ExplodingManager.instancia.getExplosive())
                 {
-                    Debug.Log("EXPLODE");
+                    Debug.Log(ExplodingManager.instancia.player.transform.position);
                     Instantiate(deadPrefab, ExplodingManager.instancia.player.transform.position, ExplodingManager.instancia.player.transform.rotation);
                     Instantiate(ExplodingManager.instancia.ExplosionPrefab, hit.transform.position, hit.transform.rotation);
                     ExplodingManager.instancia.HasWinner();

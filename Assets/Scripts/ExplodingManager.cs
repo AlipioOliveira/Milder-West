@@ -146,7 +146,7 @@ public class ExplodingManager : MonoBehaviour
     }
 
     public void changeTimeBakcToNormal()
-    {        
+    {
         //Time.timeScale = 1f;
         //Time.fixedDeltaTime = Time.fixedDeltaTime * slowness;
     }

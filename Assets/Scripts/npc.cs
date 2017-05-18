@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class npc : MonoBehaviour 
 {
-    public float rotateSpeed = 5f;
-    public string name = "Joe";
-    public string[] dialogue;
+    public float rotateSpeed = 5f;    
 
     private Transform playerT;
 
@@ -21,6 +19,10 @@ public class npc : MonoBehaviour
 
     private bool col;
 
+    private string name;
+    private string[] dialogue;
+    private int minigameId;
+
     void Start () 
 	{
         NPCManager.instancia.addNewNPC(this.gameObject);
@@ -31,10 +33,8 @@ public class npc : MonoBehaviour
 	    
 	void Update () 
 	{
-        if (rotateToPlayer)
-        {            
-            rotateTwords(playerT);
-        }
+        if (rotateToPlayer)        
+            rotateTwords(playerT);        
         else
         {            
             if ((path[pathID].position - transform.position).magnitude <= 0.2f)
@@ -46,15 +46,11 @@ public class npc : MonoBehaviour
                 }
                 else pathID++;
                 
-                UpdateDirection();
-                
+                UpdateDirection();                
             }
-            if (!col)
-            {
-                transform.position += direction * speed * Time.deltaTime;
-            }            
+            if (!col)            
+                transform.position += direction * speed * Time.deltaTime;                
             rotateTwords(path[pathID]);
-
         }
     }
 
@@ -101,7 +97,7 @@ public class npc : MonoBehaviour
          
         UpdateDirection();
     }
-
+     
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -120,4 +116,16 @@ public class npc : MonoBehaviour
             animator.SetBool("isWalking", true);
         }
     }
+
+    public void setProperties(string firstName, string lastName, string[] _dialogue, int mId)
+    {
+        name = firstName +" " +lastName;
+        dialogue = _dialogue;
+        minigameId = mId;
+    }
+    private void OnDestroy()
+    {
+        NPCManager.instancia.removeNpc(this.gameObject);
+    }
 }
+

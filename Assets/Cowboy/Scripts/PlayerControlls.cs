@@ -125,9 +125,9 @@ public class PlayerControlls : MonoBehaviour {
             //}
             if (Input.GetKeyDown(KeyCode.Alpha1) && !isDead)
             {
-                isDead = true;
-                spawnDeadPrefab(transform, deadPrefab.transform);
-                Instantiate(deadPrefab);
+                isDead = true;                
+                GameObject dead = Instantiate(deadPrefab);
+                spawnDeadPrefab(transform, dead.transform);
                 //ThirdPersonCamera.instacia.playerDead = true;
                 Destroy(gameObject);                                               
             }
