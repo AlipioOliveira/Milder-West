@@ -18,29 +18,38 @@ public class RevolverInput : MonoBehaviour
     public float force = 10f;
 
     public int magazineSize = 6;
-    private int bulletsIn;
+    
     private bool isReloading = false;
+    private bool canUseWeapon = true;
 
-    private Vector3 inacuracy;
+    [HideInInspector]
+    public Vector3 inacuracy;
+    [HideInInspector]
+    public int bulletsIn;
 
     public Rigidbody PlayerRb;
 
     public Image crosshair;
     public bool breakObjectOnCollision = false;
 
-    void Start()
+    private void Awake()
     {
         bulletsIn = magazineSize;
         anim = GetComponent<Animator>();
     }
 
-    void Update()
+    protected virtual void Start()
     {
         
-        if (canFire() && Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)                  
-            anim.SetTrigger("Shot1");        
-        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))        
-            anim.SetTrigger("Reload");        
+    }
+
+    protected virtual void Update()
+    {
+
+        if (canFire() && canUseWeapon && Input.GetButtonDown("Fire1") && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1") && bulletsIn > 0)
+            anim.SetTrigger("Shot1");
+        else if (bulletsIn <= 0 && !isReloading && !anim.GetCurrentAnimatorStateInfo(0).IsName("Shooting1"))
+            anim.SetTrigger("Reload");
     }
 
     public void StartReload()
@@ -67,12 +76,22 @@ public class RevolverInput : MonoBehaviour
             {
                 crosshair.color = Color.green;
                 return true;
-            }            
+            }
         }
-        return true;
+        else
+        {
+            crosshair.color = Color.green;
+            return true;
+        }
     }
 
-    public void Shoot()
+    public void setWeaponStatus(bool state)
+    {
+        canUseWeapon = state;
+        anim.SetBool("Down", !state);
+    }
+
+    protected virtual void Shoot()
     {
         inacuracy = new Vector3(Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.x, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.y, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.z);
         bulletsIn--;
@@ -98,6 +117,10 @@ public class RevolverInput : MonoBehaviour
             if (breakObjectOnCollision && hit.transform.tag == "Breakable")
             {
                 hit.transform.GetComponent<BreakOnColision>().Break();
+            }
+            else if (hit.transform.tag == "Enemy")
+            {                
+                hit.transform.gameObject.GetComponent<Enemy>().Kill();
             }
         }        
     }

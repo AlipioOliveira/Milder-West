@@ -44,6 +44,7 @@ public class CanvasManager : MonoBehaviour
 
     public void RestartScene()
     {
+        Cursor.visible = false;
         ExplodingManager.instancia.changeTimeBakcToNormal();
         StartCoroutine(WaitForSeconds());
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -51,6 +52,7 @@ public class CanvasManager : MonoBehaviour
 
     public void ContinueButton()
     {
+        Cursor.visible = false;
         ExplodingManager.instancia.changeTimeBakcToNormal();
         StartCoroutine(WaitForSeconds());
         SceneManager.LoadScene(0);
@@ -62,7 +64,8 @@ public class CanvasManager : MonoBehaviour
     }
 
     public void ActivateEndCanvas()
-    {        
+    {
+        Cursor.visible = true;
         EndPannel.SetActive(true);
         GamePannel.SetActive(false);
     }

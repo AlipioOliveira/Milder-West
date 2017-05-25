@@ -17,7 +17,7 @@ public class DialogueManager : MonoBehaviour
     private Button continueButton, stopButton;
     private Text dialogueText, nameText, shadowText;
     private int dIndex;
-    private GameObject interacingWith;
+    private npc interacingWith;
 
     private float switchLine = 1f;
     public float timeToSwitchLine = 2f;
@@ -29,6 +29,7 @@ public class DialogueManager : MonoBehaviour
     private float lineIndex;
     private float nextLineIndex = 1;
     private bool interacting = false;
+    private int NpcIndex = 0;
 
     public bool checkLineLength = false;
     public int maxLetters = 20;
@@ -52,10 +53,12 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
 
         dialogueString = new List<string>();
+        SceneTransitionManager.instancia.setCurrentSceneIndex(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void AddNewDialogue(string[] lines, string name, GameObject interactor)
-    {        
+    public void AddNewDialogue(string[] lines, string name, GameObject interactor, int index)
+    {
+        Cursor.visible = true;
         lineIndex = 0;
         dIndex = 0;
         switchLine = 1f;
@@ -87,7 +90,10 @@ public class DialogueManager : MonoBehaviour
             dialogueString.Add(item);                                    
         }
         npcName = name;
-        interacingWith = interactor;
+        NpcIndex = index;
+        interacingWith = interactor.GetComponent<npc>();
+        SceneTransitionManager.instancia.setNpcName(npcName);
+        SceneTransitionManager.instancia.setNpcIndex(index);
         CreateDialogue();
     }    
 
@@ -162,12 +168,13 @@ public class DialogueManager : MonoBehaviour
     {
         
         StopInteraction();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + interacingWith.minigameId);
         // MUDAR DE CENA     
     }
 
     private void StopInteraction()
     {
-        interacingWith.GetComponent<npc>().StopRotating();
+        interacingWith.StopRotating();
         PlayerControlls.instancia.StopIteraction();
         NPCManager.instancia.StopInteraction();
         Cursor.visible = false;

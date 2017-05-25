@@ -8,7 +8,6 @@ public class NPCSpawner : MonoBehaviour
 {
     public Transform[] Paths;
     public Transform[] SpawnPoints;
-    public GameObject[] NpcPrefab;
 
     private float spawnTime;
 
@@ -22,7 +21,7 @@ public class NPCSpawner : MonoBehaviour
     private NpcData data;
 
     void Start () 
-	{
+	{        
         ReadJsonData();
         spawnTime = Random.Range(timeToSpawnMin, timeToSpawnMax);
         SpawnNpc();
@@ -39,7 +38,8 @@ public class NPCSpawner : MonoBehaviour
     private void SpawnNpc()
     {
         int spawnPointIndex = Random.Range(0, SpawnPoints.Length);
-        GameObject newInstance = Instantiate(NpcPrefab[Random.Range(0, NpcPrefab.Length)].gameObject, SpawnPoints[spawnPointIndex].position,
+        int npcIndex = Random.Range(0, SceneTransitionManager.instancia.MenuNpcPrefab.Count);
+        GameObject newInstance = Instantiate(SceneTransitionManager.instancia.MenuNpcPrefab[npcIndex].gameObject, SpawnPoints[spawnPointIndex].position,
             SpawnPoints[spawnPointIndex].rotation, this.gameObject.transform);
         npc newNpc = newInstance.GetComponent<npc>();
         newNpc.setPath(Paths[Random.Range(0, Paths.Length)]);
@@ -47,7 +47,7 @@ public class NPCSpawner : MonoBehaviour
         int dialogueIndex = Random.Range(0, data.Dialogue.Length);
 
         newNpc.setProperties(data.FristName[Random.Range(0, data.FristName.Length)], data.LastName[Random.Range(0, data.LastName.Length)],
-            data.Dialogue[dialogueIndex].DialogueText, data.Dialogue[dialogueIndex].minigameId);
+            data.Dialogue[dialogueIndex].DialogueText, data.Dialogue[dialogueIndex].minigameId, npcIndex);
         spawnTime = Time.time + Random.Range(timeToSpawnMin, timeToSpawnMax);
     }
 

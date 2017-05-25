@@ -1,11 +1,11 @@
 {
-  "FristName": [ "Joe", "Lang", "Tom", "Eli", "Tony"],
-  "LastName": [ "Doyle", "Thompson", "Langley", "Corleone", "Lake" ],
+  "FristName": [ "Joe", "Lang", "Tom", "Eli", "Tony", "Albert", "Alfred", "Bernard", "Ames", "Avery", "Bailey" , "Boone" , "Buck", "Pike", "Wayne", "Trevor", "John", "Collin"],
+  "LastName": [ "Doyle", "Thompson", "Langley", "Corleone", "Lake", "Tibs", "Scurlock", "Acord", "Murray", "Bendell", "Scarborough", "Helm", "Montana", "Pickett", "McFarlane", "Wayne"],
   "Dialogue": 
 	[ 
 		{
 			"id": 0,
-			"minigameId" : 0,
+			"minigameId" : 1,
 			"DialogueText" : ["1 - HEY WASUP", "HOW YOU DOING!!", "ITS WORKING BOYS!!"]	
 		},
 		{
@@ -20,7 +20,7 @@
 		},
 		{
 			"id": 3,
-			"minigameId" : 3,
+			"minigameId" : 2,
 			"DialogueText" : ["4 - Can I walk?", "YES I CAN !!!!!!"]
 		}
 	]

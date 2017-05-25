@@ -21,7 +21,8 @@ public class npc : MonoBehaviour
 
     private string name;
     private string[] dialogue;
-    private int minigameId;
+    public int minigameId { get; private set; }
+    private int INDEX = 0;
 
     void Start () 
 	{
@@ -74,7 +75,7 @@ public class npc : MonoBehaviour
     {
         playerT = t;
         rotateToPlayer = true;
-        DialogueManager.instancia.AddNewDialogue(dialogue, name, this.gameObject);
+        DialogueManager.instancia.AddNewDialogue(dialogue, name, this.gameObject, INDEX);
         animator.SetBool("isRunning", false);
         animator.SetBool("isWalking", false);
     }
@@ -117,11 +118,12 @@ public class npc : MonoBehaviour
         }
     }
 
-    public void setProperties(string firstName, string lastName, string[] _dialogue, int mId)
+    public void setProperties(string firstName, string lastName, string[] _dialogue, int mId, int index)
     {
         name = firstName +" " +lastName;
         dialogue = _dialogue;
         minigameId = mId;
+        INDEX = index;
     }
     private void OnDestroy()
     {
