@@ -105,32 +105,7 @@ public class PlayerControlls : MonoBehaviour {
                 //rb.rotation = Quaternion.Euler(0, 0, 0);
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isRunningBack", false);
-            }
-
-            //if (Input.GetKeyDown(KeyCode.Alpha1))
-            //{
-            //    hasWeapon = !hasWeapon;
-            //    animator.SetBool("hasWeapon", hasWeapon);
-            //    animator.SetBool("isRunning", false);
-            //    animator.SetBool("isRunningBack", false);
-            //    if (hasWeapon)
-            //        weapon = Instantiate(prefab, hand.transform, false);
-            //    else Destroy(weapon);
-            //}
-            //if (hasWeapon && Input.GetKeyDown(KeyCode.Mouse0))
-            //{
-            //    Debug.Log("FIRE!!");
-            //    animator.SetTrigger("Shoot");
-            //    weapon.GetComponent<RevolverInput>().Shoot();
-            //}
-            if (Input.GetKeyDown(KeyCode.Alpha1) && !isDead)
-            {
-                isDead = true;                
-                GameObject dead = Instantiate(deadPrefab);
-                spawnDeadPrefab(transform, dead.transform);
-                //ThirdPersonCamera.instacia.playerDead = true;
-                Destroy(gameObject);                                               
-            }
+            }           
             if (Input.GetButtonDown("Jump") && !isJumping && translation >= 0)
             {
                 //Debug.Log("Jump");

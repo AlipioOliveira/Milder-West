@@ -6,8 +6,8 @@ public class spawnTumbleWeed : MonoBehaviour
 {
     public Transform[] spawnPoints;
 
-    public float timeToSpawnMin;
-    public float timeToSpawnMax;
+    public float timeToSpawnMin = 8;
+    public float timeToSpawnMax = 15;
 
     public GameObject prefab;
 

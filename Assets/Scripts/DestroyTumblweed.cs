@@ -14,6 +14,8 @@ public class DestroyTumblweed : MonoBehaviour
     [Range(0.1f, 10f)]
     private float fadeDuration = 5f;
 
+    private bool active = false;
+
     void Start () 
 	{
 		
@@ -21,21 +23,24 @@ public class DestroyTumblweed : MonoBehaviour
 	
 	void Update () 
 	{
-        timeToStartFading -= Time.deltaTime;
+        if (active)
+        {
+            timeToStartFading -= Time.deltaTime;
 
-        if (newAlpha < 0.99 && timeToStartFading <= 0f)
-            newAlpha += (1f / fadeDuration) * Time.deltaTime;
-        else if (newAlpha >= 0.99) Destroy(gameObject);
+            if (newAlpha < 0.99 && timeToStartFading <= 0f)
+                newAlpha += (1f / fadeDuration) * Time.deltaTime;
+            else if (newAlpha >= 0.99) Destroy(gameObject);
 
             MeshRenderer renderer = this.GetComponent<MeshRenderer>();
             Color originalColour = renderer.material.color;
             renderer.material.color = new Color(originalColour.r, originalColour.g, originalColour.b, 1 - newAlpha);
-        
+        }                
     }
 
     public void setValues(float _timeToStartFading, float _fadeDuration)
     {
         timeToStartFading = _timeToStartFading;
         fadeDuration = _fadeDuration;
+        active = true;
     }
 }

@@ -114,7 +114,7 @@ public class ExplodingMinigameRevolver : MonoBehaviour
                 {
                     Debug.Log(ExplodingManager.instancia.player.transform.position);
                     Instantiate(deadPrefab, ExplodingManager.instancia.player.transform.position, Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + 90, transform.rotation.eulerAngles.z));
-                    Instantiate(ExplodingManager.instancia.ExplosionPrefab, hit.transform.position, hit.transform.rotation);
+                    Instantiate(ExplodingManager.instancia.ExplosionPrefab, hit.transform.position + new Vector3(0, 1, 0), Quaternion.Euler(0,0,0));
                     ExplodingManager.instancia.HasWinner();
                 }
                 CanvasManager.instancia.setTunrCheckpointText("Go back to your spot.");      
