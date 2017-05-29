@@ -109,14 +109,14 @@ public class RevolverInput : MonoBehaviour
             GameObject impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impact, 0.3f);
 
-            if (hit.rigidbody != null)
+            if (hit.rigidbody != null && !breakObjectOnCollision)
             {
-                hit.rigidbody.AddForceAtPosition((hit.point - camera.transform.position).normalized * force, hit.point);
                 hit.transform.parent = null;
+                hit.rigidbody.AddForceAtPosition((hit.point - camera.transform.position).normalized * force, hit.point);                        
             }
             if (breakObjectOnCollision && hit.transform.tag == "Breakable")
-            {
-                hit.transform.GetComponent<BreakOnColision>().Break();
+            {               
+                hit.transform.GetComponent<BreakOnColision>().Break((hit.point - camera.transform.position).normalized * force, hit.point);
             }
             else if (hit.transform.tag == "Enemy")
             {                

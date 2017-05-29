@@ -19,7 +19,26 @@ public class BreakOnColision : MonoBehaviour {
     public void Break()
     {
         isBroken = true;
-        Instantiate(prefab, transform.position, transform.rotation);
+        Instantiate(prefab, transform.position, transform.rotation);       
+        Destroy(gameObject);
+    }
+
+    public void Break(Vector3 force, Vector3 pos)
+    {
+        isBroken = true;
+        GameObject a = Instantiate(prefab, transform.position, transform.rotation);
+        if (a.transform.childCount > 0)
+        {
+            for (int i = 0; i < a.transform.childCount; i++)
+            {
+                a.transform.GetChild(i).GetComponent<Rigidbody>().AddForce(force,ForceMode.Force);
+            }
+        }
+        else
+        {
+            a.transform.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
+        }
+
         Destroy(gameObject);
     }
 }

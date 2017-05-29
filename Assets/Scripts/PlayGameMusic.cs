@@ -8,10 +8,11 @@ public class PlayGameMusic : MonoBehaviour
     public InMusicGroup musicExample;
     public InMusicGroup musicExample2;
 
+    int sound = 0;
     void Start()
     {
-        int a = Random.Range(0, 2);
-        if (a== 0)
+        sound = Random.Range(0, 2);
+        if (sound == 0)
         {
             InAudio.Music.Play(musicExample);
             InAudio.Music.SetVolume(musicExample, 0.1f);
@@ -25,7 +26,8 @@ public class PlayGameMusic : MonoBehaviour
 
     private void OnDestroy()
     {
-        InAudio.Music.Stop(musicExample);
-        InAudio.Music.Stop(musicExample2);
+        if (sound == 0)
+            InAudio.Music.Stop(musicExample);
+        else InAudio.Music.Stop(musicExample2);                       
     }
 }
