@@ -15,7 +15,7 @@ public class mouseLook : MonoBehaviour
 	{       
         player = this.transform.parent.gameObject;
         UnityEngine.Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;        
     }
 	
 	void Update () 

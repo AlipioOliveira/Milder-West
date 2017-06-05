@@ -11,10 +11,13 @@ public class MoveTumblweed : MonoBehaviour
 
     private bool destroy = false;
 
-    public InAudioEvent TumbleweedEvents; 
+    public InAudioEvent TumbleweedEvents;
+
+    public float TimeToDestroy = 20f;
 
 	void Start () 
 	{
+        TimeToDestroy += Time.time;
         GetComponent<DestroyTumblweed>().enabled = false;
         rb = GetComponent<Rigidbody>();
 	}
@@ -22,7 +25,7 @@ public class MoveTumblweed : MonoBehaviour
 	void FixedUpdate () 
 	{
         rb.AddForce(direction * Time.fixedDeltaTime, ForceMode.Force);
-        if (transform.position.x >= minPos && !destroy)
+        if ((transform.position.x >= minPos && !destroy) || (TimeToDestroy <= Time.time && !destroy))
         {
             destroy = true;
             GetComponent<DestroyTumblweed>().enabled = true;

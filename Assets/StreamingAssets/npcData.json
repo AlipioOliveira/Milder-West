@@ -1,25 +1,21 @@
 {
-  "FristName": [ "Joe", "Lang", "Tom", "Eli", "Tony", "Albert", "Alfred", "Bernard", "Ames", "Avery", "Bailey" , "Boone" , "Buck", "Pike", "Wayne", "Trevor", "John", "Collin"],
-  "LastName": [ "Doyle", "Thompson", "Langley", "Corleone", "Lake", "Tibs", "Scurlock", "Acord", "Murray", "Bendell", "Scarborough", "Helm", "Montana", "Pickett", "McFarlane", "Wayne"],
+  "FristName": [ "Joe", "Lang", "Tom", "Eli", "Tony", "Albert", "Alfred", "Bernard", "Ames", "Avery", "Bailey" , "Boone" , "Buck", "Pike", "Wayne", "Trevor", "John", "Collin", "Bob"],
+  "LastName": [ "Doyle", "Thompson", "Langley", "Corleone", "Lake", "Tibs", "Scurlock", "Acord", "Murray", "Bendell", "Scarborough", "Helm", "Montana", "Pickett", "McFarlane", "Wayne", "Simpson"],
   "Dialogue": 
 	[ 
 		{
-			"id": 0,
 			"minigameId" : 1,
-			"DialogueText" : ["1 - HEY WASUP", "HOW YOU DOING!!", "ITS WORKING BOYS!!"]	
+			"DialogueText" : ["1 - Well IDK WAT TO RIGHT!!", "THIS IS THE NEXT LINE", "AND ANOTHER ONE"]	
 		},
 		{
-			 "id": 1,
 			 "minigameId": 1,
 			 "DialogueText": [ "2 - BLAH BLAG BLAH", "IM NOT HERE", "NO??" ]
 		},
 		{
-			"id": 2,
 			"minigameId": 2,
 			"DialogueText": [ "3 - Im Here", "Just kidding", "blah blah blah" ]
 		},
 		{
-			"id": 3,
 			"minigameId" : 2,
 			"DialogueText" : ["4 - Can I walk?", "YES I CAN !!!!!!"]
 		}

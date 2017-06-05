@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour 
 {
@@ -22,21 +23,22 @@ public class SceneTransitionManager : MonoBehaviour
 
     private int currentSceneIndex = 0;
 
+    private int menuIndex = 0;
+
     private void Awake()
     {
-        instancia = this;
+        if (instancia == null)
+        {
+            instancia = this;
+        }
+        else Destroy(this.gameObject);  
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start () 
-	{
-		
-	}
-	
-	void Update () 
-	{
-		
-	}
+    private void Start()
+    {
+        menuIndex = SceneManager.GetActiveScene().buildIndex;
+    }
 
     public void setNpcName(string name)
     {
@@ -58,5 +60,9 @@ public class SceneTransitionManager : MonoBehaviour
     public void setNpcIndex(int index)
     {
         currentNpcIndex = index;   
+    }
+    public int getMenuIndex()
+    {
+        return menuIndex;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class CanvasManager : MonoBehaviour 
+public class CanvasManager : MonoBehaviour
 {
     public static CanvasManager instancia;
 
@@ -19,12 +19,16 @@ public class CanvasManager : MonoBehaviour
     public Button ContinueBtn;
     public Button RestartBtn;
 
-	void Start () 
-	{
+    public GameObject fadeCanvas;
+    private Animator fadeAnimator;
+
+    void Start()
+    {
         EndPannel.SetActive(false);
+        fadeAnimator = fadeCanvas.GetComponent<Animator>();
         instancia = this;
     }
-	
+
     public void setTunrNumberText(string text)
     {
         TurnNumberText.text = text;
@@ -45,17 +49,19 @@ public class CanvasManager : MonoBehaviour
     public void RestartScene()
     {
         Cursor.visible = false;
-        ExplodingManager.instancia.changeTimeBakcToNormal();
-        StartCoroutine(WaitForSeconds());
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //StartCoroutine(WaitForSeconds());
+        fadeAnimator.SetTrigger("start");
+        fadeAnimator.speed = (ExplodingManager.instancia.slowness);
+        StartCoroutine(WaitToLoadScene(getAnimationTime("FadeOut"), SceneManager.GetActiveScene().buildIndex));
     }
 
     public void ContinueButton()
     {
-        Cursor.visible = false;
-        ExplodingManager.instancia.changeTimeBakcToNormal();
-        StartCoroutine(WaitForSeconds());
-        SceneManager.LoadScene(0);
+        Cursor.visible = false;        
+        //StartCoroutine(WaitForSeconds());
+        fadeAnimator.SetTrigger("start");
+        fadeAnimator.speed = (ExplodingManager.instancia.slowness);
+        StartCoroutine(WaitToLoadScene(getAnimationTime("FadeOut"), SceneTransitionManager.instancia.getMenuIndex()));
     }
 
     IEnumerator WaitForSeconds()
@@ -68,5 +74,21 @@ public class CanvasManager : MonoBehaviour
         Cursor.visible = true;
         EndPannel.SetActive(true);
         GamePannel.SetActive(false);
+    }
+
+    private float getAnimationTime(string animName)
+    {
+        RuntimeAnimatorController ac = fadeAnimator.runtimeAnimatorController;    //Get Animator controller
+        for (int i = 0; i < ac.animationClips.Length; i++)                 //For all         
+            if (ac.animationClips[i].name == animName)        //If it has the same name as your clip            
+                return ac.animationClips[i].length;
+        return 0;
+    }
+
+    IEnumerator WaitToLoadScene(float time, int sceneIndex)
+    {
+        yield return new WaitForSeconds(time / (ExplodingManager.instancia.slowness));
+        ExplodingManager.instancia.changeTimeBakcToNormal();
+        SceneManager.LoadScene(sceneIndex);
     }
 }

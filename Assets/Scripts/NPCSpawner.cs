@@ -6,8 +6,11 @@ using LitJson;
 
 public class NPCSpawner : MonoBehaviour 
 {
-    public Transform[] Paths;
+    public Grid grid;
+    public PathFinding find;
+
     public Transform[] SpawnPoints;
+    public Transform[] Objectives;
 
     private float spawnTime;
 
@@ -17,13 +20,12 @@ public class NPCSpawner : MonoBehaviour
     private string path;
     private string jsonString;
 
-    //private npcData data;
     private NpcData data;
 
     void Start () 
 	{        
         ReadJsonData();
-        spawnTime = Random.Range(timeToSpawnMin, timeToSpawnMax);
+        spawnTime = Random.Range(timeToSpawnMin, timeToSpawnMax) + Time.time;
         SpawnNpc();
     }
 	
@@ -42,12 +44,20 @@ public class NPCSpawner : MonoBehaviour
         GameObject newInstance = Instantiate(SceneTransitionManager.instancia.MenuNpcPrefab[npcIndex].gameObject, SpawnPoints[spawnPointIndex].position,
             SpawnPoints[spawnPointIndex].rotation, this.gameObject.transform);
         npc newNpc = newInstance.GetComponent<npc>();
-        newNpc.setPath(Paths[Random.Range(0, Paths.Length)]);
+        //newNpc.setPath(Paths[Random.Range(0, Paths.Length)]);
 
-        int dialogueIndex = Random.Range(0, data.Dialogue.Length);
-
+        int dialogueIndex = Random.Range(0, data.Dialogue.Length); 
+        
         newNpc.setProperties(data.FristName[Random.Range(0, data.FristName.Length)], data.LastName[Random.Range(0, data.LastName.Length)],
             data.Dialogue[dialogueIndex].DialogueText, data.Dialogue[dialogueIndex].minigameId, npcIndex);
+
+        int objIndex = Random.Range(0, Objectives.Length);
+
+        find.FindPath(newNpc.transform.position, Objectives[objIndex].position);
+        List<Node> p = grid.path;
+        find.FindPath(Objectives[objIndex].position, newNpc.transform.position);
+        p.AddRange(grid.path);
+        newNpc.setPath(p);    
         spawnTime = Time.time + Random.Range(timeToSpawnMin, timeToSpawnMax);
     }
 
@@ -69,7 +79,7 @@ public class NpcData
 [System.Serializable]
 public class Dialogue
 {
-    public int id;
+    //public int id;
     public int minigameId;
     public string[] DialogueText;
 }

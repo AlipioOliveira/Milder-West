@@ -20,6 +20,7 @@ public class m2RevolverInput : RevolverInput
     {
         yield return new WaitForSeconds(time);
         setWeaponStatus(true);
+        Minigame2Manager.instancia.npc.GetComponent<Minigame2Npc>().StartMinigame();
     }
 
     protected override void Shoot()
@@ -52,7 +53,7 @@ public class m2RevolverInput : RevolverInput
             else if (hit.transform.tag == "Enemy")
             {
                 Minigame2Manager.instancia.PlayerWon();
-                hit.transform.gameObject.GetComponent<Enemy>().Kill();
+                hit.transform.gameObject.GetComponent<Minigame2Npc>().Kill();
             }
         }
     }

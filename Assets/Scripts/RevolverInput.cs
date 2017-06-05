@@ -120,7 +120,7 @@ public class RevolverInput : MonoBehaviour
             }
             else if (hit.transform.tag == "Enemy")
             {                
-                hit.transform.gameObject.GetComponent<Enemy>().Kill();
+                hit.transform.gameObject.GetComponent<Minigame2Npc>().Kill();
             }
         }        
     }

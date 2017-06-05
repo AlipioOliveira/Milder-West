@@ -47,7 +47,7 @@ public class RandomMovement : MonoBehaviour
             if (Time.time >= nextRandom)
                 randomizeRotation();
 
-            t += 0.05f * Time.deltaTime;
+            t += (1 / nextRandom) * Time.deltaTime;
 
             xSpinD = Mathf.Lerp(xSpinD, xSpin, t);
             ySpinD = Mathf.Lerp(ySpinD, ySpin, t);

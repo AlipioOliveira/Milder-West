@@ -61,7 +61,10 @@ public class ExplodingMinigameRevolver : MonoBehaviour
     public void setWeaponStatus(bool state)
     {
         canUseWeapon = state;
-        anim.SetBool("Down", !state);
+        if (anim != null)
+        {
+            anim.SetBool("Down", !state);
+        }
     }
 
     private bool canFire()
@@ -105,8 +108,7 @@ public class ExplodingMinigameRevolver : MonoBehaviour
                 hit.rigidbody.AddForceAtPosition((hit.point - camera.transform.position).normalized * force, hit.point);
             }
             if (breakObjectOnCollision && ExplodingManager.instancia.objects.Contains(hit.transform.gameObject) && hit.transform.tag == "Breakable")
-            {                               
-                setWeaponStatus(false);
+            {                                               
                 ExplodingManager.instancia.objects.Remove(hit.transform.gameObject);
                 ExplodingManager.instancia.PlayerShoot();
                 hit.transform.GetComponent<BreakOnColision>().Break();
@@ -116,9 +118,9 @@ public class ExplodingMinigameRevolver : MonoBehaviour
                     Instantiate(deadPrefab, ExplodingManager.instancia.player.transform.position, Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + 90, transform.rotation.eulerAngles.z));
                     Instantiate(ExplodingManager.instancia.ExplosionPrefab, hit.transform.position + new Vector3(0, 1, 0), Quaternion.Euler(0,0,0));
                     ExplodingManager.instancia.HasWinner();
-                }
-                CanvasManager.instancia.setTunrCheckpointText("Go back to your spot.");      
-                          
+                }else setWeaponStatus(false);
+                CanvasManager.instancia.setTunrCheckpointText("Go back to your spot.");
+                
             }
             GameObject impact = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
             Destroy(impact, 0.3f);

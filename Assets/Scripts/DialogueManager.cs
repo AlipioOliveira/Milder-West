@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class DialogueManager : MonoBehaviour 
+public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instancia;
 
@@ -13,6 +13,8 @@ public class DialogueManager : MonoBehaviour
     private string npcName;
 
     public GameObject dialoguePanel;
+    public GameObject fadeCanvas;
+    private Animator fadeAnimator;
 
     private Button continueButton, stopButton;
     private Text dialogueText, nameText, shadowText;
@@ -23,7 +25,7 @@ public class DialogueManager : MonoBehaviour
     public float timeToSwitchLine = 2f;
     [Range(0.5f, 45f)]
     public int LetterPerSecond = 20;
-    [Range(1,10)]
+    [Range(1, 10)]
     public int LettersAhead = 1;
 
     private float lineIndex;
@@ -49,11 +51,14 @@ public class DialogueManager : MonoBehaviour
         stopButton.onClick.AddListener(delegate { StopInteraction(); });
         dialogueText = dialoguePanel.transform.FindChild("Text").GetComponent<Text>();
         shadowText = dialoguePanel.transform.FindChild("TextShadow").GetComponent<Text>();
-        nameText = dialoguePanel.transform.FindChild("npcName").GetChild(0).GetComponent<Text>();        
+        nameText = dialoguePanel.transform.FindChild("npcName").GetChild(0).GetComponent<Text>();
         dialoguePanel.SetActive(false);
 
-        dialogueString = new List<string>();
+        dialogueString = new List<string>();        
         SceneTransitionManager.instancia.setCurrentSceneIndex(SceneManager.GetActiveScene().buildIndex);
+
+        fadeAnimator = fadeCanvas.GetComponent<Animator>();
+        //StartCoroutine(WaitToDisableCanvas(getAnimationTime("FadeIn")));
     }
 
     public void AddNewDialogue(string[] lines, string name, GameObject interactor, int index)
@@ -87,7 +92,7 @@ public class DialogueManager : MonoBehaviour
             //    dialogueString.Add(l2);
             //}
             //else 
-            dialogueString.Add(item);                                    
+            dialogueString.Add(item);
         }
         npcName = name;
         NpcIndex = index;
@@ -95,16 +100,16 @@ public class DialogueManager : MonoBehaviour
         SceneTransitionManager.instancia.setNpcName(npcName);
         SceneTransitionManager.instancia.setNpcIndex(index);
         CreateDialogue();
-    }    
+    }
 
     private void Update()
-    {           
+    {
         if (interacting)
-        {            
-            lineIndex += LetterPerSecond * Time.deltaTime;         
+        {
+            lineIndex += LetterPerSecond * Time.deltaTime;
 
             if (((int)lineIndex + 1 >= nextLineIndex) && (int)lineIndex < dialogueString[dIndex].Length)
-            {               
+            {
                 dialogueText.text += dialogueString[dIndex][(int)lineIndex];
                 shadowText.text = dialogueText.text;
 
@@ -115,11 +120,11 @@ public class DialogueManager : MonoBehaviour
                         shadowText.text += dialogueString[dIndex][(int)lineIndex + 1 + i];
                     }
                 }
-                
-                nextLineIndex++;                              
+
+                nextLineIndex++;
             }
             else if ((int)lineIndex + 1 > dialogueString[dIndex].Length)
-            {                
+            {
                 if (switchLine > 0)
                     switchLine -= (1f / timeToSwitchLine) * Time.deltaTime;
                 else if (switchLine <= 0)
@@ -127,7 +132,7 @@ public class DialogueManager : MonoBehaviour
                     switchLine = 1f;
                     ContinueDialogue();
                 }
-            }       
+            }
         }
     }
 
@@ -166,9 +171,11 @@ public class DialogueManager : MonoBehaviour
 
     private void AceptChalange()
     {
-        
         StopInteraction();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + interacingWith.minigameId);
+        //fadeCanvas.SetActive(false);
+        fadeAnimator.SetTrigger("start");
+        StartCoroutine(WaitToLoadScene(getAnimationTime("FadeOut"), SceneManager.GetActiveScene().buildIndex + interacingWith.minigameId));
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + interacingWith.minigameId);
         // MUDAR DE CENA     
     }
 
@@ -185,5 +192,25 @@ public class DialogueManager : MonoBehaviour
         continueButton.transform.localScale = Vector3.zero;
         nextLineIndex = 1;
         dialoguePanel.SetActive(false);
+    }
+
+    private float getAnimationTime(string animName)
+    {        
+        RuntimeAnimatorController ac = fadeAnimator.runtimeAnimatorController;    //Get Animator controller
+        for (int i = 0; i < ac.animationClips.Length; i++)                 //For all         
+            if (ac.animationClips[i].name == animName)        //If it has the same name as your clip            
+                return ac.animationClips[i].length;
+        return 0;        
+    }
+
+    IEnumerator WaitToLoadScene(float time, int sceneIndex)
+    {
+        yield return new WaitForSeconds(time);
+        SceneManager.LoadScene(sceneIndex);
+    }
+    IEnumerator WaitToDisableCanvas (float time)
+    {
+        yield return new WaitForSeconds(time);
+        fadeCanvas.SetActive(false);
     }
 }

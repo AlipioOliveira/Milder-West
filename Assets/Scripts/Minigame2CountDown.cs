@@ -74,7 +74,7 @@ public class Minigame2CountDown : MonoBehaviour
     IEnumerator Wait(float time)
     {        
         yield return new WaitForSeconds(time);
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
         c = false;
     }
 }

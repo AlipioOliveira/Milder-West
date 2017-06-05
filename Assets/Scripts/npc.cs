@@ -10,7 +10,7 @@ public class npc : MonoBehaviour
 
     private bool rotateToPlayer = false;
 
-    public Transform[] path;
+    public List<Node> path;
     private int pathID = 0;
     private Vector3 direction;
     public float speed = 2f;
@@ -24,6 +24,8 @@ public class npc : MonoBehaviour
     public int minigameId { get; private set; }
     private int INDEX = 0;
 
+    private bool destroy = false;
+
     void Start () 
 	{
         NPCManager.instancia.addNewNPC(this.gameObject);
@@ -34,29 +36,36 @@ public class npc : MonoBehaviour
 	    
 	void Update () 
 	{
-        if (rotateToPlayer)        
-            rotateTwords(playerT);        
+        if (rotateToPlayer)
+            rotateTwords(playerT);
         else
-        {            
+        {
             if ((path[pathID].position - transform.position).magnitude <= 0.2f)
             {
-                if (pathID + 1 >= path.Length)
+                if (pathID + 1 >= path.Count)
                 {
                     Destroy(this.gameObject, 1f);
                     pathID = 0;
                 }
                 else pathID++;
-                
-                UpdateDirection();                
+
+                UpdateDirection();
             }
-            if (!col)            
-                transform.position += direction * speed * Time.deltaTime;                
-            rotateTwords(path[pathID]);
+            if (!col)
+                transform.position += direction * speed * Time.deltaTime;
+            rotateTwords(path[pathID].position);
         }
     }
 
     private void UpdateDirection()
+    {        
+        direction = path[pathID].position - transform.position;
+        direction.y = 0;
+        direction.Normalize();
+    }
+    private void UpdateDirection2()
     {
+        Debug.Log(path[pathID].position);
         direction = path[pathID].position - transform.position;
         direction.y = 0;
         direction.Normalize();
@@ -65,6 +74,15 @@ public class npc : MonoBehaviour
     private void rotateTwords(Transform _target)
     {
         Vector3 direction = _target.position - transform.position;
+        direction.y = 0;
+        float rotSpeed = rotateSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotSpeed, 0.0F);
+        transform.rotation = Quaternion.LookRotation(newDirection);
+    }
+
+    private void rotateTwords(Vector3 _target)
+    {
+        Vector3 direction = _target - transform.position;
         direction.y = 0;
         float rotSpeed = rotateSpeed * Time.deltaTime;
         Vector3 newDirection = Vector3.RotateTowards(transform.forward, direction, rotSpeed, 0.0F);
@@ -89,16 +107,12 @@ public class npc : MonoBehaviour
         }        
     }
 
-    public void setPath(Transform _path)
+    public void setPath(List<Node> _path)
     {
-        path = new Transform[_path.childCount];
-
-        for (int i = 0; i < _path.childCount; i++)        
-           path[i] = _path.GetChild(i).transform; 
-         
+        path = _path;
         UpdateDirection();
     }
-     
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -123,7 +137,7 @@ public class npc : MonoBehaviour
         name = firstName +" " +lastName;
         dialogue = _dialogue;
         minigameId = mId;
-        INDEX = index;
+        INDEX = index;              
     }
     private void OnDestroy()
     {

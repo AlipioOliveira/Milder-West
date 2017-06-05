@@ -2,20 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour 
+public class Minigame2Npc : MonoBehaviour
 {
-
     public GameObject deadPrefab;
 
-	void Start () 
-	{
-		
-	}
-	
-	void Update () 
-	{
-		
-	}
+    public float timeToShoot = 3;
+    public float timeToKill = 0.2f;
+    private Animator anim;
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+             
+    }
+
+    public void StartMinigame()
+    {        
+        StartCoroutine(WaitToShoot(timeToShoot));
+        StartCoroutine(WaitToKill(timeToShoot + timeToKill));
+    }
 
     public void Kill()
     {
@@ -33,5 +42,17 @@ public class Enemy : MonoBehaviour
             if (player.GetChild(i).childCount > 0)
                 spawnDeadPrefab(player.GetChild(i), dead.GetChild(i));
         }
+    }
+
+    IEnumerator WaitToShoot(float time)
+    {        
+        yield return new WaitForSeconds(time);
+        anim.SetTrigger("Shoot");
+        anim.SetBool("isWalking", false);
+    }
+    IEnumerator WaitToKill(float time)
+    {
+        yield return new WaitForSeconds(time);        
+        Minigame2Manager.instancia.NpcWon();//kills player
     }
 }

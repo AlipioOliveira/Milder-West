@@ -19,14 +19,26 @@ public class Minigame2Manager : MonoBehaviour
 
     public float slowness = 10f;
     public float slowDownTime = 3f;
-    private float originalfixedDeltaTime;    
+    private float originalfixedDeltaTime;
+
+    public GameObject npc;
+    public GameObject player;
+    public GameObject deadPlayer;
+
+    public GameObject endCamera;
+
+    public GameObject EndPlayer;
 
     void Start () 
-	{
+	{        
         instancia = this;
+        endCamera.gameObject.SetActive(false);
         originalfixedDeltaTime = Time.fixedDeltaTime;
         EndPannel.SetActive(false);
-        GameObject newNpc = Instantiate(SceneTransitionManager.instancia.Minigame2Prefabs[SceneTransitionManager.instancia.getNpcIndex()], NpcSpawnPoint.transform.position, NpcSpawnPoint.transform.rotation);
+        if (npc == null)
+        {
+            npc = Instantiate(SceneTransitionManager.instancia.Minigame2Prefabs[SceneTransitionManager.instancia.getNpcIndex()], NpcSpawnPoint.transform.position, NpcSpawnPoint.transform.rotation);
+        }        
     }
 	
 	void Update () 
@@ -40,16 +52,24 @@ public class Minigame2Manager : MonoBehaviour
         end = true;
         Debug.Log("NpcWon!!");
         StartCoroutine(SlowDown());
-        setEndCanvas("Better Luck next time!!!");
+        setEndCanvas(SceneTransitionManager.instancia.getNpcName() + " is the winner!!!");
+        GameObject dead = Instantiate(deadPlayer, player.transform.position, player.transform.rotation);
+        //dead.transform.Rotate(Vector3.up, 180);
+        dead.transform.position -= new Vector3(0,0.5f,0);
+        Destroy(player.gameObject);
+        endCamera.gameObject.SetActive(true);
     }
 
     public void PlayerWon()
     {
+        GameObject obj = Instantiate(EndPlayer, player.transform.position - new Vector3(0, 0.9f, 0), player.transform.rotation);
         EndPannel.SetActive(true);
         end = true;
         Debug.Log("PlayerWon!!");
         StartCoroutine(SlowDown());
         setEndCanvas("Congratulations you won!!!");
+        Destroy(player.gameObject);
+        endCamera.gameObject.SetActive(true);        
     }
 
     private void setEndCanvas(string winner)
@@ -80,13 +100,13 @@ public class Minigame2Manager : MonoBehaviour
     {
         Cursor.visible = false;
         changeTimeBakcToNormal();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ContinueButton()
     {
         Cursor.visible = false;
         changeTimeBakcToNormal();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneTransitionManager.instancia.getMenuIndex());
     }
 }

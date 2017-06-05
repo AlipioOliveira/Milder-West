@@ -18,7 +18,7 @@ public class spawnTumbleWeed : MonoBehaviour
         spawnTime = new float[spawnPoints.Length];
         for (int i = 0; i < spawnPoints.Length; i++)
         {
-            spawnTime[i] = Random.Range(timeToSpawnMin, timeToSpawnMax);
+            spawnTime[i] = Random.Range(timeToSpawnMin, timeToSpawnMax) + Time.time;
         }
 	}
 	

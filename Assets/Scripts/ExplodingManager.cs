@@ -37,8 +37,11 @@ public class ExplodingManager : MonoBehaviour
         Debug.Log(objects.IndexOf(Explosive));
         endCamera.gameObject.SetActive(false);
         instancia = this;
-        GameObject newNpc = Instantiate(SceneTransitionManager.instancia.Minigame1Prefabs[SceneTransitionManager.instancia.getNpcIndex()], NpcSpawnPoint.transform.position, NpcSpawnPoint.transform.rotation);
-        npc = newNpc;
+        if (npc == null)
+        {
+            GameObject newNpc = Instantiate(SceneTransitionManager.instancia.Minigame1Prefabs[SceneTransitionManager.instancia.getNpcIndex()], NpcSpawnPoint.transform.position, NpcSpawnPoint.transform.rotation);
+            npc = newNpc;
+        }               
         NextRound();
 	}
 	
@@ -54,7 +57,7 @@ public class ExplodingManager : MonoBehaviour
             roud++;
             if (roud % 2 == 0) //even
             {
-                CanvasManager.instancia.setTunrNameText("Its " + SceneTransitionManager.instancia.getNpcName() + " turn to Play.");
+                CanvasManager.instancia.setTunrNameText("Its " + SceneTransitionManager.instancia.getNpcName() + "'s turn to Play.");
                 CanvasManager.instancia.setTunrCheckpointText("");                
                 player.GetComponent<fpsController>().FreezePlayer(true);
                 int index = Random.Range(0, objects.Count);
@@ -65,8 +68,8 @@ public class ExplodingManager : MonoBehaviour
             }
             if (roud % 2 == 1) //odd
             {
-                CanvasManager.instancia.setTunrNameText("Its PLAYER turn to Play.");
-                CanvasManager.instancia.setTunrCheckpointText("Its Player's time to shoot.");
+                CanvasManager.instancia.setTunrNameText("Its PLAYER's turn to Play.");
+                CanvasManager.instancia.setTunrCheckpointText("Its PLAYER's time to shoot.");
                 player.GetComponent<ExplodingPlayer>().IsTurn();
                 player.GetComponent<fpsController>().FreezePlayer(false);
             }
