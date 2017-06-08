@@ -32,6 +32,8 @@ public class ExplodingMinigameRevolver : MonoBehaviour
 
     public GameObject deadPrefab;
 
+    public InAudioNode ShootSound;
+
     void Start()
     {
         bulletsIn = magazineSize;
@@ -92,6 +94,8 @@ public class ExplodingMinigameRevolver : MonoBehaviour
 
     public void Shoot()
     {
+        InAudio.Play(gameObject, ShootSound);
+
         inacuracy = new Vector3(Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.x, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.y, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.z);
         bulletsIn--;
         muzzle.Play();
@@ -117,6 +121,7 @@ public class ExplodingMinigameRevolver : MonoBehaviour
                     Debug.Log(ExplodingManager.instancia.player.transform.position);
                     Instantiate(deadPrefab, ExplodingManager.instancia.player.transform.position, Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y + 90, transform.rotation.eulerAngles.z));
                     Instantiate(ExplodingManager.instancia.ExplosionPrefab, hit.transform.position + new Vector3(0, 1, 0), Quaternion.Euler(0,0,0));
+                    InAudio.Play(ExplodingManager.instancia.transform.gameObject, ExplodingManager.instancia.ExplosionSound);
                     ExplodingManager.instancia.HasWinner();
                 }else setWeaponStatus(false);
                 CanvasManager.instancia.setTunrCheckpointText("Go back to your spot.");

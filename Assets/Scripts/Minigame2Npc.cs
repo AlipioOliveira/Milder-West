@@ -13,11 +13,12 @@ public class Minigame2Npc : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        npcSoundScript.instancia.UpdatePosition(transform.position);
     }
 
     void Update()
     {
-             
+        
     }
 
     public void StartMinigame()
@@ -52,7 +53,8 @@ public class Minigame2Npc : MonoBehaviour
     }
     IEnumerator WaitToKill(float time)
     {
-        yield return new WaitForSeconds(time);        
+        yield return new WaitForSeconds(time);                
         Minigame2Manager.instancia.NpcWon();//kills player
+        npcSoundScript.instancia.PlayShootSound();
     }
 }

@@ -15,6 +15,7 @@ public class ExplodingManager : MonoBehaviour
     private int Winner = 0;
 
     public GameObject ExplosionPrefab;
+    public InAudioNode ExplosionSound;
     public GameObject NpcSpawnPoint;
     public float slowness = 10f;
     public float slowDownTime = 3f;

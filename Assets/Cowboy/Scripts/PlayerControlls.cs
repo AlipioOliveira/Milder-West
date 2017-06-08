@@ -35,6 +35,16 @@ public class PlayerControlls : MonoBehaviour {
 
     public GameObject[] Children { get; private set; }
 
+    public InAudioNode FootstepsSound;
+    public float footStepTime = 0.35f;
+    public float backwardsMulti = 0.6f;
+    private float footStepDtime = 0;
+
+    public InAudioNode JumpSound;
+    public InAudioNode LandSound;
+    public float timeForLandingSound = 0.3f;
+    private float timeForLandingDSound = 0;
+
     void Start ()
     {
         rb = GetComponent<Rigidbody>();
@@ -43,33 +53,11 @@ public class PlayerControlls : MonoBehaviour {
         target = this.transform;
 	}
 
-    //private void Update()
-    //{
-    //    RaycastHit hit;
-
-    //    if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.up * 0.1f) + (Vector3.down * 0.1f), out hit))
-    //    {
-    //        if (hit.transform.tag != this.tag)
-    //        {
-    //            Debug.DrawLine(hit.transform.position, transform.position, Color.red);
-    //            Debug.Log(hit.transform.tag);
-    //        }
-    //        //Debug.DrawLine(ray.origin, hit.point);
-
-    //        //if (hit.tra == player.gameObject)
-    //        //{
-    //        //    Debug.Log("Player is above me");
-    //        //    // player is directly above this tile
-    //        //    pausePlayer = true;
-    //        //}
-    //    }
-    //}
-
     void FixedUpdate ()
     {
         if (!interacting)
         {
-            walkingSpeed = hasWeapon ? 0.2f : 1f;
+            //walkingSpeed = hasWeapon ? 0.2f : 1f;
             //jumpSpeed = isJumping ? 1f : 1f;    
 
             float translation = Input.GetAxisRaw("Vertical") * movementSpeed * jumpSpeed * walkingSpeed * Time.fixedDeltaTime;
@@ -81,36 +69,58 @@ public class PlayerControlls : MonoBehaviour {
             bool isJumping = animator.GetCurrentAnimatorStateInfo(0).IsName("jump");
 
             if (isJumping && translation > 0 && applyUpForce)
-            {
-                //rb.velocity = new Vector3(0, 5 * jumpPower * Time.fixedDeltaTime, 0);
+            {                
                 applyUpForce = false;
             }
             if (!isJumping)
                 applyUpForce = true;
+            if (isJumping && (timeForLandingDSound < timeForLandingSound))
+            {
+                timeForLandingDSound += Time.fixedDeltaTime;
+            }
+            if (timeForLandingDSound >= timeForLandingSound)
+            {
+                timeForLandingDSound = 0;
+                InAudio.Play(gameObject, LandSound);                
+            }
 
             if (translation > 0 && !isJumping && !animator.GetCurrentAnimatorStateInfo(0).IsName("shooting"))
             {
                 transform.Translate(0, 0, translation);
+                if (footStepDtime >= footStepTime)
+                {
+                    InAudio.Play(gameObject, FootstepsSound);
+                    footStepDtime = 0;
+                }
+                else footStepDtime += Time.fixedDeltaTime;                                
+
                 animator.SetBool("isRunning", true);
                 animator.SetBool("isRunningBack", false);
             }
             else if (translation < 0 && !isJumping && !animator.GetCurrentAnimatorStateInfo(0).IsName("shooting"))
             {
                 transform.Translate(0, 0, translation);
+                if (footStepDtime >= footStepTime * backwardsMulti)
+                {
+                    InAudio.Play(gameObject, FootstepsSound);
+                    footStepDtime = 0;
+                }
+                else footStepDtime += Time.fixedDeltaTime;                
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isRunningBack", true);
             }
             else
-            {
-                //rb.rotation = Quaternion.Euler(0, 0, 0);
+            {                
                 animator.SetBool("isRunning", false);
                 animator.SetBool("isRunningBack", false);
+                footStepDtime = 0;
             }           
             if (Input.GetButtonDown("Jump") && !isJumping && translation >= 0)
             {
-                //Debug.Log("Jump");
+                InAudio.Play(gameObject, JumpSound);
+                timeForLandingDSound = 0;
                 animator.SetTrigger("isJumping");
-            }
+            }            
         }
         else if (interacting)
         {

@@ -21,17 +21,21 @@ public class ExplodingNpc : MonoBehaviour
 
     public GameObject deadPrefab;
 
+    public float footStepTime = 0.35f;
+    private float footStepDtime = 0;
+
     void Start () 
 	{
         originalPos = transform.position;
         lookTwords = originalPos - transform.right;
-        anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();      
 	}
 	
 	void Update () 
 	{        
         if (turn)
-        {            
+        {
+            npcSoundScript.instancia.UpdatePosition(transform.position);
             if (moveTwordsTarguet)
             {
                 Vector3 direction = target.transform.position - transform.position;
@@ -73,6 +77,13 @@ public class ExplodingNpc : MonoBehaviour
         direction.y = 0;
         direction.Normalize();
         transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * speed * Time.deltaTime;
+        if (footStepDtime >= footStepTime)
+        {
+            npcSoundScript.instancia.PlayWalkSound();
+            footStepDtime = 0;
+        }
+        else footStepDtime += Time.fixedDeltaTime;
         anim.SetBool("isWalking", true);
     }
 
@@ -97,17 +108,19 @@ public class ExplodingNpc : MonoBehaviour
         {
             dead.transform.GetChild(i).gameObject.transform.position = player.GetChild(i).gameObject.transform.position;
             dead.transform.GetChild(i).gameObject.transform.rotation = player.GetChild(i).gameObject.transform.rotation;
-            if (player.GetChild(i).childCount > 0)
+            if (player.GetChild(i).childCount > 0 && player.GetChild(i).transform.tag == "NPC")
                 spawnDeadPrefab(player.GetChild(i), dead.GetChild(i));
         }
     }
 
     private void Shoot()
     {
+        npcSoundScript.instancia.PlayShootSound();
         anim.SetTrigger("Shoot");        
         if (isDead)
         {          
-            Instantiate(ExplodingManager.instancia.ExplosionPrefab, target.transform.position, target.transform.rotation);                   
+            Instantiate(ExplodingManager.instancia.ExplosionPrefab, target.transform.position, target.transform.rotation);
+            InAudio.Play(ExplodingManager.instancia.transform.gameObject, ExplodingManager.instancia.ExplosionSound);
             GameObject dead = Instantiate(deadPrefab);
             spawnDeadPrefab(transform, dead.transform);
             ExplodingManager.instancia.HasWinner();           

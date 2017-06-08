@@ -10,6 +10,9 @@ public class BreakOnColision : MonoBehaviour {
     public float strength = 1f;
 
     private bool isBroken = false;
+
+    public InAudioNode BreakSound;
+
     void OnCollisionEnter(Collision collision)
     {
         if ((collision.relativeVelocity.magnitude > 6f * strength) && !isBroken) 
@@ -19,7 +22,8 @@ public class BreakOnColision : MonoBehaviour {
     public void Break()
     {
         isBroken = true;
-        Instantiate(prefab, transform.position, transform.rotation);       
+        GameObject broken = Instantiate(prefab, transform.position, transform.rotation);
+        InAudio.Play(broken, BreakSound);
         Destroy(gameObject);
     }
 
@@ -27,6 +31,7 @@ public class BreakOnColision : MonoBehaviour {
     {
         isBroken = true;
         GameObject a = Instantiate(prefab, transform.position, transform.rotation);
+        InAudio.Play(a, BreakSound);
         if (a.transform.childCount > 0)
         {
             for (int i = 0; i < a.transform.childCount; i++)

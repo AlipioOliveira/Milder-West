@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class m2RevolverInput : RevolverInput 
 {
+    public InAudioNode ShootSound;
+
     protected override void Start()
     {
         setWeaponStatus(false);
@@ -25,6 +27,8 @@ public class m2RevolverInput : RevolverInput
 
     protected override void Shoot()
     {
+        InAudio.Play(Minigame2Manager.instancia.gameObject, ShootSound);
+
         inacuracy = new Vector3(Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.x, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.y, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.z);
         bulletsIn--;
         muzzle.Play();

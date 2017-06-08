@@ -26,6 +26,10 @@ public class npc : MonoBehaviour
 
     private bool destroy = false;
 
+    public InAudioNode FootstepsSound;
+    public float footStepTime = 0.35f;
+    private float footStepDtime = 0;
+
     void Start () 
 	{
         NPCManager.instancia.addNewNPC(this.gameObject);
@@ -52,7 +56,15 @@ public class npc : MonoBehaviour
                 UpdateDirection();
             }
             if (!col)
+            {
                 transform.position += direction * speed * Time.deltaTime;
+                if (footStepDtime >= footStepTime)
+                {
+                    InAudio.Play(gameObject, FootstepsSound);
+                    footStepDtime = 0;
+                }
+                else footStepDtime += Time.fixedDeltaTime;
+            }
             rotateTwords(path[pathID].position);
         }
     }

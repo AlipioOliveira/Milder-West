@@ -13,8 +13,18 @@ public class fpsController : MonoBehaviour
     public bool canJump = true;
     public float jumpHeight = 2.0f;
     private bool grounded = false;
-    private bool freeze = false;
+    private bool freeze = false;   
     private Rigidbody rigidbody;
+
+    public InAudioNode FootstepsSound;
+    public float footStepTime = 0.35f;
+    public float backwardsMulti = 0.6f;
+    private float footStepDtime = 0;
+
+    public InAudioNode JumpSound;
+    public InAudioNode LandSound;
+    public float timeForLandingSound = 0.3f;
+    private float timeForLandingDSound = 0;
 
     void Awake()
     {
@@ -34,6 +44,13 @@ public class fpsController : MonoBehaviour
                 targetVelocity = transform.TransformDirection(targetVelocity);
                 targetVelocity *= speed;
 
+                if (targetVelocity != Vector3.zero && (footStepDtime >= footStepTime))
+                {
+                    InAudio.Play(gameObject, FootstepsSound);
+                    footStepDtime = 0;
+                }
+                else footStepDtime += Time.fixedDeltaTime;
+
                 // Apply a force that attempts to reach our target velocity
                 Vector3 velocity = rigidbody.velocity;
                 Vector3 velocityChange = (targetVelocity - velocity);
@@ -42,9 +59,20 @@ public class fpsController : MonoBehaviour
                 velocityChange.y = 0;
                 rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
+                if ((timeForLandingDSound >= 0) && timeForLandingDSound < timeForLandingSound)
+                {
+                    timeForLandingDSound += Time.fixedDeltaTime;
+                }
+                if (timeForLandingDSound >= timeForLandingSound)
+                {
+                    timeForLandingDSound = -1;
+                    InAudio.Play(gameObject, LandSound);
+                }
                 // Jump
                 if (canJump && Input.GetButton("Jump"))
                 {
+                    InAudio.Play(gameObject, JumpSound);
+                    timeForLandingDSound = 0;
                     rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
                 }
             }

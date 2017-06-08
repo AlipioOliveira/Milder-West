@@ -93,6 +93,7 @@ public class RevolverInput : MonoBehaviour
 
     protected virtual void Shoot()
     {
+
         inacuracy = new Vector3(Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.x, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.y, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.z);
         bulletsIn--;
         muzzle.Play();

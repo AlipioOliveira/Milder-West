@@ -33,8 +33,11 @@ public class FadeObject : MonoBehaviour {
         for (int i = 0; i < Children.Length; i++)
         {
             MeshRenderer renderer = Children[i].GetComponent<MeshRenderer>();
-            Color originalColour = renderer.material.color;
-            renderer.material.color = new Color(originalColour.r, originalColour.g, originalColour.b, 1 - newAlpha);
+            if (renderer != null)
+            {
+                Color originalColour = renderer.material.color;
+                renderer.material.color = new Color(originalColour.r, originalColour.g, originalColour.b, 1 - newAlpha);
+            }            
         }
     }
     public void setValues(float _timeToStartFading, float _fadeDuration)
