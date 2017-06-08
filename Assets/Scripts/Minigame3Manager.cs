@@ -35,8 +35,8 @@ public class Minigame3Manager : MonoBehaviour {
     void Start () {
         instancia = this;
         endCamera.gameObject.SetActive(false);
-        NpcSpawnPoint.transform.Translate(-10 * prevWins, 0, 0);
-        endCamera.transform.Translate(-10 * prevWins, 0, 0);
+        NpcSpawnPoint.transform.Translate(-5 * prevWins, 0, 0);
+        endCamera.transform.Translate(-5 * prevWins, 0, 0);
         target.transform.position = NpcSpawnPoint.transform.position;
         EndPannel.SetActive(false);
         originalfixedDeltaTime = Time.fixedDeltaTime;
@@ -69,7 +69,8 @@ public class Minigame3Manager : MonoBehaviour {
         else
         {
             Debug.Log("NPCWon!!");
-            //player.GetComponent<ExplodingPlayer>().playerCamera.enabled = false;            
+            //player.GetComponent<ExplodingPlayer>().playerCamera.enabled = false;    
+            prevWins++;        
             SlowTime();
             setEndCanvas("Good Job");
             Destroy(player);

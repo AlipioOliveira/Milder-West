@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class m2RevolverInput : RevolverInput 
 {
-    public InAudioNode ShootSound;
-
     protected override void Start()
     {
         setWeaponStatus(false);

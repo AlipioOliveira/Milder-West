@@ -32,6 +32,8 @@ public class RevolverInput : MonoBehaviour
     public Image crosshair;
     public bool breakObjectOnCollision = false;
 
+    public InAudioNode ShootSound;
+
     private void Awake()
     {
         bulletsIn = magazineSize;
@@ -93,7 +95,7 @@ public class RevolverInput : MonoBehaviour
 
     protected virtual void Shoot()
     {
-
+        InAudio.Play(Minigame3Manager.instancia.gameObject, ShootSound);
         inacuracy = new Vector3(Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.x, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.y, Random.Range(-0.1f, 0.1f) * PlayerRb.velocity.z);
         bulletsIn--;
         muzzle.Play();
