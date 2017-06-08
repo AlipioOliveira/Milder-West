@@ -32,10 +32,15 @@ public class BreakOnColision : MonoBehaviour {
         isBroken = true;
         GameObject a = Instantiate(prefab, transform.position, transform.rotation);
         InAudio.Play(a, BreakSound);
-        if (a.transform.childCount > 0)        
-            for (int i = 0; i < a.transform.childCount; i++)            
-                a.transform.GetChild(i).GetComponent<Rigidbody>().AddForce(force,ForceMode.Force);                    
-        else a.transform.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);        
+        if (a.transform.childCount > 0)
+        {
+            for (int i = 0; i < a.transform.childCount; i++)
+            {
+                if (a.transform.GetChild(i).GetComponent<Rigidbody>() != null)
+                    a.transform.GetChild(i).GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);
+            }
+        }
+        else if (a.transform.GetComponent<Rigidbody>() != null) a.transform.GetComponent<Rigidbody>().AddForce(force, ForceMode.Force);        
         Destroy(gameObject);
     }
 }
