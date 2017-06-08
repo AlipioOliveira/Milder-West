@@ -50,6 +50,13 @@ public class Minigame3Manager : MonoBehaviour {
 
     public void End(int winner)
     {
+        foreach (var item in bottles)
+        {
+            if (item != null)
+            {
+                item.transform.parent = this.transform;
+            }
+        }
         if (winner == 0)
         {
             Debug.Log("NPCWon!!");
@@ -71,11 +78,7 @@ public class Minigame3Manager : MonoBehaviour {
     }
 
     public void Kill()
-    {
-        foreach (var item in bottles)
-        {
-            item.transform.parent = null;            
-        }
+    {        
         GameObject dead = Instantiate(EndPlayer);
         spawnDeadPrefab(target.transform, dead.transform);
         Destroy(target);

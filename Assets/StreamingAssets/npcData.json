@@ -2,8 +2,8 @@
   "FristName": [ "Joe", "Lang", "Tom", "Eli", "Tony", "Albert", "Alfred", "Bernard", "Ames", "Avery", "Bailey" , "Boone" , "Buck", "Pike", "Wayne", "Trevor", "John", "Collin", "Bob"],
   "LastName": [ "Doyle", "Thompson", "Langley", "Corleone", "Lake", "Tibs", "Scurlock", "Acord", "Murray", "Bendell", "Scarborough", "Helm", "Montana", "Pickett", "McFarlane", "Wayne", "Simpson"],
   "Dialogue": 
-	[ 
-		{
+	[ 			
+    {
 			"minigameId" : 1,
 			"DialogueText" : ["Well hello there!", "I bet you weren't expecting me!", "Wanna go for a round of West Roullete?"]	
 		},
@@ -13,7 +13,7 @@
     },		
     {
 			 "minigameId": 1,
-      "DialogueText": [ "Psst, Hey!", "Wanna go for a sniff of explosives with me?", "I have enough for a game of West Roullete." ]
+      "DialogueText": [ "Psst, Hey!", "Wanna go for a sniff of explosives?", "I have some for a game of West Roullete." ]
 		},
 		{
 			"minigameId": 2,
@@ -25,11 +25,11 @@
     },
     {
       "minigameId": 2,
-      "DialogueText": [ "YOU!!!!!!!!", "THIS TOWN JUST AIN'T BIG ENOUGH FOR THE TWO OF US!!!!!", "DRUNKEN DUEL!!!!!" ]
+      "DialogueText": [ "YOU!!!!!!!!", "THIS TOWN JUST AIN'T ","BIG ENOUGH FOR THE TWO OF US!!!!!", "DRUNKEN DUEL!!!!!" ]
     },
     {
       "minigameId": 3,
-      "DialogueText": [ "Your twin brother got himself in trouble again...", "You know the drill", "If you want him to go unpunished, make sure to hit the bottles." ]
+      "DialogueText": [ "Your twin brother is in trouble again...", "You know the drill", "If you want him to go unpunished,","make sure to hit the bottles." ]
     },
     {
       "minigameId": 3,
@@ -38,6 +38,6 @@
     {
       "minigameId": 3,
       "DialogueText": ["Your twin brother...", "Are you sure he's your twin?","Or a convenient plot to justify laziness?", "Know what? Forget it...","Just hit the bottles this time."]
-    }
+    }		
 	]
 }
