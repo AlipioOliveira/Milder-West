@@ -116,7 +116,8 @@ public class RevolverInput : MonoBehaviour
                 hit.rigidbody.AddForceAtPosition((hit.point - camera.transform.position).normalized * force, hit.point);                        
             }
             if (breakObjectOnCollision && hit.transform.tag == "Breakable")
-            {               
+            {
+                Minigame3Manager.instancia.bottles.Remove(hit.transform.gameObject);
                 hit.transform.GetComponent<BreakOnColision>().Break((hit.point - camera.transform.position).normalized * force, hit.point);
             }
 
