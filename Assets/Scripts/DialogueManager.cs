@@ -33,7 +33,6 @@ public class DialogueManager : MonoBehaviour
     private bool interacting = false;
     private int NpcIndex = 0;
 
-    public bool checkLineLength = false;
     public int maxLetters = 20;
 
     private void Awake()
@@ -58,7 +57,6 @@ public class DialogueManager : MonoBehaviour
         SceneTransitionManager.instancia.setCurrentSceneIndex(SceneManager.GetActiveScene().buildIndex);
 
         fadeAnimator = fadeCanvas.GetComponent<Animator>();
-        //StartCoroutine(WaitToDisableCanvas(getAnimationTime("FadeIn")));
     }
 
     public void AddNewDialogue(string[] lines, string name, GameObject interactor, int index)
@@ -68,32 +66,8 @@ public class DialogueManager : MonoBehaviour
         dIndex = 0;
         switchLine = 1f;
         dialogueString = new List<string>();
-        foreach (var item in lines)
-        {
-            //if (checkLineLength && item.Length >= maxLetters)
-            //{
-            //    string[] line;
-            //    line = item.Split(' ');
-            //    string l1 = "", l2 = "";
-            //    for (int i = 0; i < line.Length; i++)
-            //    {
-            //        if (i < line.Length / 2)
-            //        {
-            //            l1 += line[i];
-            //            l1 += " ";
-            //        }
-            //        else
-            //        {
-            //            l2 += line[i];
-            //            l2 += " ";
-            //        }
-            //    }
-            //    dialogueString.Add(l1);
-            //    dialogueString.Add(l2);
-            //}
-            //else 
+        foreach (var item in lines)       
             dialogueString.Add(item);
-        }
         npcName = name;
         NpcIndex = index;
         interacingWith = interactor.GetComponent<npc>();

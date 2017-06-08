@@ -9,6 +9,11 @@ public class PlayGameMusic : MonoBehaviour
     public InMusicGroup musicExample2;
 
     int sound = 0;
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     void Start()
     {
         sound = Random.Range(0, 2);

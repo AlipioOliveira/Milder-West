@@ -62,7 +62,7 @@ public class Minigame2Manager : MonoBehaviour
 
     public void PlayerWon()
     {
-        GameObject obj = Instantiate(EndPlayer, player.transform.position - new Vector3(0, 0.9f, 0), player.transform.rotation);
+        GameObject obj = Instantiate(EndPlayer, player.transform.position - new Vector3(0, 1f, 0), player.transform.rotation);
         EndPannel.SetActive(true);
         end = true;
         Debug.Log("PlayerWon!!");

@@ -5,19 +5,39 @@
 	[ 
 		{
 			"minigameId" : 1,
-			"DialogueText" : ["1 - Well IDK WAT TO RIGHT!!", "THIS IS THE NEXT LINE", "AND ANOTHER ONE"]	
+			"DialogueText" : ["Well hello there!", "I bet you weren't expecting me!", "Wanna go for a round of West Roullete?"]	
 		},
-		{
+    {
+      "minigameId": 1,
+      "DialogueText": [ "Did you know 5 out of 6 guys say Russian Roullete is safe?", "That why our West Roullete is the best: Less safer, more fun!", "Do you want to give it a try?" ]
+    },		
+    {
 			 "minigameId": 1,
-			 "DialogueText": [ "2 - BLAH BLAG BLAH", "IM NOT HERE", "NO??" ]
+      "DialogueText": [ "Psst, Hey!", "Wanna go for a sniff of explosives with me?", "I have enough for a game of West Roullete." ]
 		},
 		{
 			"minigameId": 2,
-			"DialogueText": [ "3 - Im Here", "Just kidding", "blah blah blah" ]
+			"DialogueText": [ "Hey Skinny Face!", "I don't like you!", "I challenge you to a Drunken Duel!" ]
 		},
-		{
-			"minigameId" : 2,
-			"DialogueText" : ["4 - Can I walk?", "YES I CAN !!!!!!"]
-		}
+    {
+      "minigameId": 2,
+      "DialogueText": [ "Yo Ugly Nose!", "Drunken Duel!", "You and Me!", "Right here! Right now!" ]
+    },
+    {
+      "minigameId": 2,
+      "DialogueText": [ "YOU!!!!!!!!", "THIS TOWN JUST AIN'T BIG ENOUGH FOR THE TWO OF US!!!!!", "DRUNKEN DUEL!!!!!" ]
+    },
+    {
+      "minigameId": 3,
+      "DialogueText": [ "Your twin brother got himself in trouble again...", "You know the drill", "If you want him to go unpunished, make sure to hit the bottles." ]
+    },
+    {
+      "minigameId": 3,
+      "DialogueText": [ "Your twin just doesn't learn...", "Didn't your mother love him enough?", "Well whatever...", "Your choice: Hurt him or the bottles." ]
+    },
+    {
+      "minigameId": 3,
+      "DialogueText": ["Your twin brother...", "Are you sure he's your twin?","Or a convenient plot to justify laziness?", "Know what? Forget it...","Just hit the bottles this time."]
+    }
 	]
 }
