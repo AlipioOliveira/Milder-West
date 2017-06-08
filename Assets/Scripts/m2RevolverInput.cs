@@ -52,7 +52,7 @@ public class m2RevolverInput : RevolverInput
             }
             if (breakObjectOnCollision && hit.transform.tag == "Breakable")
             {
-                hit.transform.GetComponent<BreakOnColision>().Break();
+                hit.transform.GetComponent<BreakOnColision>().Break((hit.point - camera.transform.position).normalized * force, hit.point);
             }
             else if (hit.transform.tag == "Enemy")
             {

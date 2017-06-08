@@ -119,9 +119,11 @@ public class RevolverInput : MonoBehaviour
             {               
                 hit.transform.GetComponent<BreakOnColision>().Break((hit.point - camera.transform.position).normalized * force, hit.point);
             }
-            else if (hit.transform.tag == "Enemy")
-            {                
-                hit.transform.gameObject.GetComponent<Minigame2Npc>().Kill();
+
+            else if (hit.transform.tag == "Target")
+            {
+                Minigame3Manager.instancia.End(0);
+
             }
         }        
     }
