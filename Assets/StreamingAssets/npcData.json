@@ -9,7 +9,7 @@
 		},
     {
       "minigameId": 1,
-      "DialogueText": [ "Did you know 5 out of 6 guys say Russian Roullete is safe?", "That why our West Roullete is the best: Less safer, more fun!", "Do you want to give it a try?" ]
+      "DialogueText": [ "Did you know 5 out of 6 guys ","say Russian Roullete is safe?", "Thats why our West Roullete"," is the best: Less safer, more fun!", "Do you want to give it a try?" ]
     },		
     {
 			 "minigameId": 1,

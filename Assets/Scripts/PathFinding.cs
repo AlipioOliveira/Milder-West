@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class PathFinding : MonoBehaviour
 {
-
-    public Transform seeker, target;
     Grid grid;
 
     void Awake()

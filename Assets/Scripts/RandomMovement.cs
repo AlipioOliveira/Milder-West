@@ -26,6 +26,7 @@ public class RandomMovement : MonoBehaviour
     public float maxRangeY = 60;
     public float minRangeX = -60;
     public float maxRangeX = 60;
+
     void Start()
     {
         player = this.transform.parent.gameObject;
@@ -38,7 +39,7 @@ public class RandomMovement : MonoBehaviour
     void Update()
     {
         if (cursorState)
-        {
+        {            
             Vector2 mouseChange = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * Time.deltaTime * sensitivity;
 
             mouselook += mouseChange;

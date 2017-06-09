@@ -44,7 +44,6 @@ public class NPCSpawner : MonoBehaviour
         GameObject newInstance = Instantiate(SceneTransitionManager.instancia.MenuNpcPrefab[npcIndex].gameObject, SpawnPoints[spawnPointIndex].position,
             SpawnPoints[spawnPointIndex].rotation, this.gameObject.transform);
         npc newNpc = newInstance.GetComponent<npc>();
-        //newNpc.setPath(Paths[Random.Range(0, Paths.Length)]);
 
         int dialogueIndex = Random.Range(0, data.Dialogue.Length); 
         
@@ -55,9 +54,10 @@ public class NPCSpawner : MonoBehaviour
 
         find.FindPath(newNpc.transform.position, Objectives[objIndex].position);
         List<Node> p = grid.path;
-        find.FindPath(Objectives[objIndex].position, newNpc.transform.position);
+        find.FindPath(Objectives[objIndex].position, SpawnPoints[Random.Range(0, SpawnPoints.Length)].position);
         p.AddRange(grid.path);
-        newNpc.setPath(p);    
+        grid.path = p;
+        newNpc.setPath(p);            
         spawnTime = Time.time + Random.Range(timeToSpawnMin, timeToSpawnMax);
     }
 
@@ -79,7 +79,6 @@ public class NpcData
 [System.Serializable]
 public class Dialogue
 {
-    //public int id;
     public int minigameId;
     public string[] DialogueText;
 }

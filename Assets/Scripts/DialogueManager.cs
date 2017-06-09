@@ -117,7 +117,7 @@ public class DialogueManager : MonoBehaviour
 
     private void CreateDialogue()
     {
-        dialogueText.text = ""/*dialogueString[dIndex]*/;
+        dialogueText.text = "";
         shadowText.text = "";
         nameText.text = npcName;
         dialoguePanel.SetActive(true);
@@ -132,7 +132,7 @@ public class DialogueManager : MonoBehaviour
         {
             lineIndex = 0;
             dIndex++;
-            dialogueText.text = ""/*dialogueString[dIndex]*/;
+            dialogueText.text = "";
             shadowText.text = " ";
             nextLineIndex = 1;
         }
@@ -146,11 +146,8 @@ public class DialogueManager : MonoBehaviour
     private void AceptChalange()
     {
         StopInteraction();
-        //fadeCanvas.SetActive(false);
         fadeAnimator.SetTrigger("start");
-        StartCoroutine(WaitToLoadScene(getAnimationTime("FadeOut"), SceneManager.GetActiveScene().buildIndex + interacingWith.minigameId));
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + interacingWith.minigameId);
-        // MUDAR DE CENA     
+        StartCoroutine(WaitToLoadScene(getAnimationTime("FadeOut"), SceneManager.GetActiveScene().buildIndex + interacingWith.minigameId));  
     }
 
     private void StopInteraction()
@@ -170,9 +167,9 @@ public class DialogueManager : MonoBehaviour
 
     private float getAnimationTime(string animName)
     {        
-        RuntimeAnimatorController ac = fadeAnimator.runtimeAnimatorController;    //Get Animator controller
-        for (int i = 0; i < ac.animationClips.Length; i++)                 //For all         
-            if (ac.animationClips[i].name == animName)        //If it has the same name as your clip            
+        RuntimeAnimatorController ac = fadeAnimator.runtimeAnimatorController;
+        for (int i = 0; i < ac.animationClips.Length; i++)     
+            if (ac.animationClips[i].name == animName)          
                 return ac.animationClips[i].length;
         return 0;        
     }
@@ -182,7 +179,7 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(time);
         SceneManager.LoadScene(sceneIndex);
     }
-    IEnumerator WaitToDisableCanvas (float time)
+    IEnumerator WaitToDisableCanvas(float time)
     {
         yield return new WaitForSeconds(time);
         fadeCanvas.SetActive(false);

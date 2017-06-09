@@ -27,6 +27,7 @@ public class Minigame3Manager : MonoBehaviour {
     public float slowDownTime = 3f;
     private float originalfixedDeltaTime;
 
+    public GameObject DeadPlayer;
     public GameObject EndPlayer;
 
     public Camera endCamera;
@@ -76,11 +77,12 @@ public class Minigame3Manager : MonoBehaviour {
             Destroy(player);
             endCamera.gameObject.SetActive(true);
         }
+        GameObject endP = Instantiate(EndPlayer, player.transform.position - new Vector3(0,1,0), player.transform.rotation);
     }
 
     public void Kill()
     {        
-        GameObject dead = Instantiate(EndPlayer);
+        GameObject dead = Instantiate(DeadPlayer);
         spawnDeadPrefab(target.transform, dead.transform);
         Destroy(target);
         Destroy(player);

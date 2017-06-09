@@ -23,7 +23,7 @@ public class Node
 
     public int getfCost()
     {
-            return gCost + hCost;
+         return gCost + hCost;
     }
 }
 

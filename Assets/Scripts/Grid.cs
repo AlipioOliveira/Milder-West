@@ -13,6 +13,8 @@ public class Grid : MonoBehaviour
     float diameter;
     int gridSizeX, gridSizeY;
 
+    public List<Node> path;
+
     void Awake()
     {
         diameter = radius * 2;
@@ -57,10 +59,8 @@ public class Grid : MonoBehaviour
                 }
             }
         }
-
         return neighbours;
     }
-
 
     public Node NodeFromWorldPoint(Vector3 position)
     {
@@ -73,8 +73,7 @@ public class Grid : MonoBehaviour
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
         return grid[x, y];
     }
-
-    public List<Node> path;
+    
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridSize.x, 1, gridSize.y));
